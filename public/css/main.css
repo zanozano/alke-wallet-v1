@@ -135,13 +135,26 @@ body {
     }
 }
 
+.table-currency {
+    border-radius: 0.6rem;
+    overflow: hidden;
+
+    & h2 {
+        color: var(--primary);
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 0.8rem;
+    }
+
+}
+
 .block-slider {
     max-height: 600px;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 0.8rem;
+    border-radius: 0.6rem;
 
     & img {
         object-fit: cover;

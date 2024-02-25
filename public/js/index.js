@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     const fetchUrl = 'https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies';
     const baseCurrency = 'usd';
-    const currenciesToCompare = ['clp', 'ars', 'pen', 'cop'];
+    const currenciesToCompare = ['clp', 'ars', 'pen', 'cop', 'usdt', 'eur', 'gbp', 'jpy', 'cad', 'aud'];
+
 
     const fetchPromises = currenciesToCompare.map(currency => {
         const url = `${fetchUrl}/${baseCurrency.toLowerCase()}/${currency}.json`;
@@ -35,9 +36,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (currencyData) {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${currencyData.currency.toUpperCase()}</td>
-                        <td>${currencyData.value.toFixed(3)}</td>
-                        <td>${currencyData.date}</td>
+                        <td class="text-center">${currencyData.currency.toUpperCase()}</td>
+                        <td class="text-center">${currencyData.value.toFixed(3)}</td>
                     `;
                     currencyTableBody.appendChild(row);
                 }
