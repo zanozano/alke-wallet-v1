@@ -183,7 +183,7 @@ footer {
 
     & div {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         align-items: center;
 
         & img {
@@ -191,4 +191,30 @@ footer {
             height: auto;
         }
     }
+
+    & h5 {
+        color: var(--tertiary);
+    }
+
+    & div {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        & ul {
+            color: var(--tertiary);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+
+            & li:hover {
+                cursor: pointer;
+                color: var(--secondary);
+            }
+        }
+    }
+
 }
