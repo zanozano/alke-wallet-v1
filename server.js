@@ -7,7 +7,6 @@ const userRoutes = require('./src/routes/viewRoutes');
 const config = require('./config');
 const PORT = config.port;
 
-// Configura el motor de plantillas Handlebars
 app.engine(
     'handlebars',
     engine({
@@ -20,16 +19,13 @@ app.engine(
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'src/views'));
 
-// Middleware para manejar datos enviados desde formularios
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use('/', userRoutes);
 
-// Configura el directorio de archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Inicia el servidor
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });

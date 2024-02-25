@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-
 router.get('/', async (req, res) => {
     try {
         res.render('Home', { layout: 'main' });
@@ -25,8 +24,6 @@ router.get('/create', async (req, res) => {
         handleError(res, error);
     }
 });
-
-
 
 function handleError(res, error) {
     console.error(`Error: ${error}`);
