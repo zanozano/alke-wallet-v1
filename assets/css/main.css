@@ -83,12 +83,14 @@ body {
 }
 
 .btn-primary {
-    padding: 12px 44px;
+    padding: 12px 32px;
     background: var(--primary);
-    border: #2A2A62;
+    border: 1px solid #2A2A62;
+
 
     &:hover {
         background-color: var(--secondary);
+        border: 1px solid var(--secondary);
     }
 
     &:focus {
@@ -99,6 +101,40 @@ body {
         background-color: var(--secondary) !important;
     }
 
+}
+
+.btn-outline-primary {
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    padding: 12px 32px;
+
+    &:hover {
+        background-color: var(--secondary);
+        border: 1px solid var(--secondary);
+    }
+
+    &:focus {
+        background-color: var(--tertiary);
+    }
+
+    &:active {
+        background-color: var(--secondary) !important;
+    }
+
+}
+
+.card-block {
+    background: #ffffff;
+    border-radius: 0.8rem;
+    padding: 2.4rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+
+    & h2 {
+        font-size: 2rem;
+        color: var(--primary);
+        font-weight: 600;
+    }
 }
 
 footer {

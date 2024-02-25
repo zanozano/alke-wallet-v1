@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="./assets/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets//css/main.css">
+    <title>Alke Wallet</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <div class="block">
+                        <img src="./assets/img/favicon.png" alt="brand">
+                        <p>
+                            Alke Wallet
+                        </p>
+                    </div>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="./index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Login</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <div class="card-block">
+            <h2 class="text-center">Create Account</h2>
+            <hr>
+            <div class="d-flex gap-4 flex-column flex-md-row">
+                <div class="w-100 d-flex justify-content-center">
+                    <img src="./assets/img/login-saving.svg" alt="saving login" />
+                </div>
+                <div class="w-100 d-flex flex-column justify-content-center">
+                    <h4 class="mb-4">
+                        Complete the information below to create your account and access your financial resources
+                    </h4>
+                    <form>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="firstName" placeholder="First Name">
+                            <label for="firstName">First Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="lastName" placeholder="Last Name">
+                            <label for="lastName">Last Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="email" placeholder="name@alkewallet.com">
+                            <label for="email">Email address</label>
+                        </div>
+                        <div class="form-floating  mb-3">
+                            <input type="password" class="form-control" id="password" placeholder="Password">
+                            <label for="password">Password</label>
+                        </div>
+                        <div class="form-floating  mb-3">
+                            <input type="password" class="form-control" id="repeatPassword"
+                                placeholder="Repeat Password">
+                            <label for="repeatPassword">Repeat Password</label>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-end mt-3 gap-3">
+                            <a href="./index.html">
+                                <button class="btn btn-outline-primary">
+                                    Cancel
+                                </button>
+                            </a>
+                            <button class="btn btn-primary">Create</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div>
+            <img src="./assets/img/brand-secondary.svg" alt="brand-secondary" />
+            <div>
+                <h5>
+                    Social Media
+                </h5>
+                <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+
+    </footer>
+
+</body>
+
+</html>
