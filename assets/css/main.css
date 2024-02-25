@@ -1,0 +1,120 @@
+@import url('_reset.css');
+@import url('_scroll.css');
+
+:root {
+    --primary-font: Roboto, Helvetica, sans-serif;
+    --background: linear-gradient(0deg, rgba(241, 230, 255, 1) 0%, rgba(249, 245, 255, 1) 100%);
+    --surface: #ffffff;
+    --primary: #2A2A62;
+    --secondary: #9A81B9;
+    --tertiary: #DFD4EE;
+}
+
+body {
+    background: var(--background);
+}
+
+.block {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    & img {
+        width: 40px;
+        height: auto;
+    }
+
+    & p {
+        font-weight: 700;
+        margin: 0;
+    }
+}
+
+
+.container {
+
+    & .banner {
+        align-items: center;
+        background-color: var(--surface);
+        border-radius: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+        margin-bottom: 2rem;
+        margin-top: 2rem;
+        min-height: 50vh;
+        padding: 2.5rem;
+        width: 100%;
+
+
+        & img:nth-child(1) {
+            height: auto;
+            width: 140px;
+        }
+
+        & div {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        & hr {
+            border: 1px solid var(--tertiary);
+            width: 200px;
+        }
+
+        & h1 {
+            color: var(--primary);
+            font-size: 2.8rem;
+            font-weight: 600;
+            line-height: 160%;
+            text-align: center;
+        }
+
+        & img {
+            width: 360px;
+            height: auto;
+        }
+
+    }
+
+}
+
+.btn-primary {
+    padding: 12px 44px;
+    background: var(--primary);
+    border: #2A2A62;
+
+    &:hover {
+        background-color: var(--secondary);
+    }
+
+    &:focus {
+        background-color: var(--tertiary);
+    }
+
+    &:active {
+        background-color: var(--secondary) !important;
+    }
+
+}
+
+footer {
+    background-color: var(--primary);
+    min-height: 100px;
+    padding: 2rem;
+    width: 100%;
+
+    & div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        & img {
+            width: 140px;
+            height: auto;
+        }
+    }
+}
