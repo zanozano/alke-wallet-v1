@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const baseCurrency = 'usd';
     const currenciesToCompare = ['clp', 'ars', 'pen', 'cop', 'usdt', 'eur', 'gbp', 'jpy', 'cad', 'aud'];
 
-
     const fetchPromises = currenciesToCompare.map(currency => {
         const url = `${fetchUrl}/${baseCurrency.toLowerCase()}/${currency}.json`;
         return fetch(url)
