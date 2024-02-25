@@ -1,0 +1,23 @@
+<footer>
+    <div class="d-flex flex-column flex-md-row">
+        <img src="./img/brand-secondary.svg" alt="brand-secondary" />
+        <div>
+            <h5>
+                Social Media
+            </h5>
+            <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+    </div>
+    <hr class="my-4">
+    <p class="text-center m-0">&copy; <span id="year"></span> Alke Wallet. All rights reserved</p>
+</footer>
+
+<script>
+    const yearElement = document.getElementById('year');
+    const currentYear = new Date().getFullYear();
+    yearElement.textContent = currentYear;
+</script>
