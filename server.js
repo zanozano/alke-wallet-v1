@@ -35,9 +35,9 @@ app.listen(PORT, () => {
 
 
 app.post('/create', async (req, res) => {
-    const { first_name, last_name, email, password, password_2 } = req.body;
+    const { first_name, last_name, email, password, repeat_password } = req.body;
 
-    if (password !== password_2) {
+    if (password !== repeat_password) {
         res.status(400).json({ success: false, message: 'Passwords do not match' });
     } else {
         try {

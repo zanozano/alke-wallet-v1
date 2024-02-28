@@ -25,9 +25,9 @@ router.get('/create', async (req, res) => {
     }
 });
 
-router.get('/user', async (req, res) => {
+router.get('/profile', async (req, res) => {
     try {
-        res.render('User', { layout: 'main' });
+        res.render('Profile', { layout: 'main' });
     } catch (error) {
         handleError(res, error);
     }
