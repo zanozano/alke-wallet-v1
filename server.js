@@ -37,6 +37,13 @@ app.listen(PORT, () => {
 app.post('/create', async (req, res) => {
     const { first_name, last_name, email, password, repeat_password } = req.body;
 
+    if (!first_name || !last_name || !email || !password || !repeat_password ||
+        typeof first_name !== 'string' || typeof last_name !== 'string' || typeof email !== 'string' ||
+        typeof password !== 'string' || typeof repeat_password !== 'string') {
+        res.status(400).json({ success: false, message: 'All fields are required and must be non-empty strings' });
+        return;
+    }
+
     if (password !== repeat_password) {
         res.status(400).json({ success: false, message: 'Passwords do not match' });
     } else {
