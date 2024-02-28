@@ -5,6 +5,7 @@
     --primary-font: Roboto, Helvetica, sans-serif;
     --background: linear-gradient(0deg, rgba(241, 230, 255, 1) 0%, rgba(249, 245, 255, 1) 100%);
     --surface: #ffffff;
+    --on-surface: #f8f4ff;
     --primary: #2A2A62;
     --secondary: #9A81B9;
     --tertiary: #DFD4EE;
@@ -71,6 +72,13 @@ body {
             font-weight: 600;
             line-height: 160%;
             text-align: center;
+
+        }
+
+        @media (max-width: 576px) {
+            h1 {
+                font-size: 1.6rem;
+            }
         }
 
         & img {
@@ -138,14 +146,23 @@ body {
 }
 
 .table-currency {
-    border-radius: 0.6rem;
-    overflow: hidden;
+
+    & div {
+        border-radius: 0.6rem;
+        overflow: hidden;
+    }
 
     & h2 {
         color: var(--primary);
         font-size: 1.8rem;
         font-weight: 600;
         margin-bottom: 0.8rem;
+    }
+
+    @media (max-width: 576px) {
+        h2 {
+            font-size: 1.2rem;
+        }
     }
 
 }
@@ -244,6 +261,35 @@ body {
     }
 }
 
+.profile-nav {
+    padding: 0.8rem;
+    width: 100%;
+    color: var(--primary);
+    font-weight: 500;
+    font-size: 1rem;
+    display: flex;
+    background-color: var(--on-surface);
+    border-radius: 0.6rem;
+
+    & ul {
+        display: flex;
+        width: 100%;
+        gap: 2rem;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+    }
+
+    @media (min-width: 780px) {
+        ul {
+            justify-content: flex-start;
+            padding-left: 1rem;
+        }
+    }
+
+}
+
+
 .body-container {
     width: 100%;
     display: flex;
@@ -252,10 +298,11 @@ body {
 
 
     & h2 {
-        font-size: 1.1rem;
+        font-size: 1rem;
         margin-bottom: 0.8rem;
     }
 }
+
 
 .table-transaction {
     min-width: 40%;

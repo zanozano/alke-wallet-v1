@@ -1,0 +1,27 @@
+:root {
+    --primary-font: Roboto, Helvetica, sans-serif;
+    --background: linear-gradient(0deg, rgba(241, 230, 255, 1) 0%, rgba(249, 245, 255, 1) 100%);
+    --surface: #ffffff;
+    --primary: #2A2A62;
+    --secondary: #9A81B9;
+    --tertiary: #DFD4EE;
+    --card: linear-gradient(45deg, rgba(241, 230, 255, 1) 0%, rgb(183, 163, 213) 100%);
+}
+
+.icon-btn {
+    align-items: center;
+    background-color: var(--tertiary);
+    border-radius: 100px;
+    color: var(--primary);
+    cursor: pointer;
+    display: flex;
+    height: 38px;
+    justify-content: center;
+    width: 38px;
+    transition: all 0.4s;
+}
+
+.icon-btn:hover {
+    background-color: var(--secondary);
+    color: var(--tertiary);
+}
