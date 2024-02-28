@@ -264,8 +264,7 @@ body {
 .profile-nav {
     padding: 0.8rem;
     width: 100%;
-    color: var(--primary);
-    font-weight: 500;
+    font-weight: 400;
     font-size: 1rem;
     display: flex;
     background-color: var(--on-surface);
@@ -278,6 +277,17 @@ body {
         justify-content: center;
         margin: 0;
         padding: 0;
+        color: var(--secondary);
+    }
+
+    & li:hover {
+        color: var(--primary);
+        transition: all 0.4s ease-in-out;
+    }
+
+    & .active-link {
+        color: var(--primary);
+        font-weight: 600;
     }
 
     @media (min-width: 780px) {

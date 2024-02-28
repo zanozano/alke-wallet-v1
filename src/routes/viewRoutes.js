@@ -1,5 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const Handlebars = require('handlebars');
+Handlebars.registerHelper('isActive', function (url, currentUrl) {
+    return currentUrl === url ? 'active' : '';
+});
 
 router.get('/', async (req, res) => {
     try {
@@ -27,7 +31,23 @@ router.get('/create', async (req, res) => {
 
 router.get('/profile', async (req, res) => {
     try {
-        res.render('Profile', { layout: 'main' });
+        res.render('Profile', { layout: 'main', currentUrl: req.originalUrl });
+    } catch (error) {
+        handleError(res, error);
+    }
+});
+
+router.get('/transfer', async (req, res) => {
+    try {
+        res.render('Transfer', { layout: 'main', currentUrl: req.originalUrl });
+    } catch (error) {
+        handleError(res, error);
+    }
+});
+
+router.get('/settings', async (req, res) => {
+    try {
+        res.render('Settings', { layout: 'main', currentUrl: req.originalUrl });
     } catch (error) {
         handleError(res, error);
     }
