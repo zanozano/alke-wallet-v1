@@ -8,6 +8,7 @@
     --primary: #2A2A62;
     --secondary: #9A81B9;
     --tertiary: #DFD4EE;
+    --card: linear-gradient(45deg, rgba(241, 230, 255, 1) 0%, rgb(183, 163, 213) 100%);
 }
 
 body {
@@ -196,7 +197,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1.6rem;
-    min-height: 60vh;
+    min-height: 50vh;
     padding: 1.6rem;
     width: 100%;
 
@@ -216,16 +217,23 @@ body {
 
     & .card-container {
         aspect-ratio: 1.5/1;
-        background-color: var(--tertiary);
+        background: var(--card);
         border-radius: .4rem;
         padding: 18px;
         width: 260px;
         display: flex;
+        color: var(--primary);
         flex-direction: column;
         justify-content: space-between;
 
+        & div:first-child {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         & p {
-            color: var(--primary);
+
             font-weight: 600;
             margin: 0;
             font-size: 0.9rem;
