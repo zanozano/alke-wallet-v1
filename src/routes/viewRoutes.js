@@ -25,6 +25,14 @@ router.get('/create', async (req, res) => {
     }
 });
 
+router.get('/user', async (req, res) => {
+    try {
+        res.render('User', { layout: 'main' });
+    } catch (error) {
+        handleError(res, error);
+    }
+});
+
 function handleError(res, error) {
     console.error(`Error: ${error}`);
     res.status(500).send({

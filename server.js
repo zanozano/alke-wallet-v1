@@ -16,6 +16,8 @@ app.engine(
     })
 );
 
+const { getUsers, postUser, putStatusUser, getLogin, putUser, deleteUser, } = require('./src/services/request');
+
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'src/views'));
 
@@ -28,4 +30,29 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+
+
+app.post('/create', async (req, res) => {
+    const { firstName, lastName, email, password, password_2 } = req.body;
+
+    if (password !== password_2) {
+        res.status(400).json({ success: false, message: 'Passwords do not match' });
+    } else {
+        try {
+
+            const newUser = await postUser(firstName, lastName, email, password);
+
+            if (newUser) {
+                console.log('INSERT NEW USER', newUser);
+                res.status(200).json({ success: true, message: 'Registration successful' });
+            } else {
+                res.status(500).json({ success: false, message: 'Error inserting user' });
+            }
+        } catch (error) {
+            console.error('Error in route handler:', error);
+            res.status(500).json({ success: false, message: `Something went wrong... ${error.message}` });
+        }
+    }
 });
