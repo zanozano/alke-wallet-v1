@@ -330,6 +330,22 @@ body {
     height: auto;
 }
 
+.profile-info {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+
+
+    & img {
+        margin: 0 auto;
+        width: 200px;
+
+    }
+
+}
+
 footer {
     background-color: var(--primary);
     min-height: 100px;
