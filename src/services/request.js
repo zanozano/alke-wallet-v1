@@ -11,14 +11,14 @@ async function getUsers() {
     }
 }
 
-async function postUser(email, firstName, lastName, password) {
+async function postUser(email, first_name, last_name, password) {
 
     try {
         const query = `
-		INSERT INTO users (email, firstName, lastName, password)
+		INSERT INTO users (email, first_name, last_name, password)
 		VALUES ($1, $2, $3, $4)
 		RETURNING *`;
-        const values = [email, firstName, lastName, password];
+        const values = [email, first_name, last_name, password];
         const result = await pool.query(query, values);
         return result.rows[0];
     } catch (error) {
@@ -51,17 +51,17 @@ async function getLogin(email, password) {
     }
 }
 
-async function putUser(firstName, lastName, password, email,) {
+async function putUser(first_name, last_name, password, email,) {
     try {
         const query = `
             UPDATE users
             SET
-                firstName = $1,
-                lastName = $2,
+                first_name = $1,
+                last_name = $2,
                 password = $3,
             WHERE email = $4
             RETURNING *`;
-        const values = [firstName, lastName, password, email,];
+        const values = [first_name, last_name, password, email,];
         const result = await pool.query(query, values);
         return result.rows[0];
     } catch (error) {

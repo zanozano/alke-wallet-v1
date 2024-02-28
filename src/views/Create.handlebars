@@ -13,13 +13,13 @@
             <form method='POST' enctype='multipart/form-data' action='http://localhost:3000/create'>
                 <div class="d-flex flex-column gap-3">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="firstName" name="firstName"
+                        <input type="text" class="form-control" id="first_name" name="first_name"
                             placeholder="First Name">
-                        <label for="firstName">First Name</label>
+                        <label for="first_name">First Name</label>
                     </div>
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name">
-                        <label for="lastName">Last Name</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name">
+                        <label for="last_name">Last Name</label>
                     </div>
                     <div class="form-floating">
                         <input type="email" class="form-control" id="email" name="email"
@@ -32,7 +32,8 @@
                         <label for="password">Password</label>
                     </div>
                     <div class="form-floating">
-                        <input type="password" class="form-control" id="repeatPassword" placeholder="Repeat Password">
+                        <input type="password" class="form-control" id="repeatPassword" name="password_2"
+                            placeholder="Repeat Password">
                         <label for="repeatPassword">Repeat Password</label>
                     </div>
                     <hr>
@@ -57,17 +58,22 @@
         window.location.href = "/";
     }
 
-    const form = document.querySelector('form');
-
-    form.addEventListener('submit', async (event) => {
+    $('form').submit(async (event) => {
         event.preventDefault();
 
-        const formData = new FormData(form);
+        const firstName = $('#firstName').val();
+        const lastName = $('#lastName').val();
+        const email = $('#email').val();
+        const password = $('#password').val();
+        const password_2 = $('#repeatPassword').val();
 
         try {
             const response = await fetch('http://localhost:3000/create', {
                 method: 'POST',
-                body: formData
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ firstName, lastName, email, password, password_2 })
             });
 
             const result = await response.json();
@@ -80,7 +86,7 @@
                     showConfirmButton: false,
                     timer: 1500
                 }).then(() => {
-                    window.location.href = '/signin';
+                    window.location.href = '/login';
                 });
             } else {
                 Swal.fire({

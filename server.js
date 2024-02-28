@@ -35,14 +35,14 @@ app.listen(PORT, () => {
 
 
 app.post('/create', async (req, res) => {
-    const { firstName, lastName, email, password, password_2 } = req.body;
+    const { first_name, last_name, email, password, password_2 } = req.body;
 
     if (password !== password_2) {
         res.status(400).json({ success: false, message: 'Passwords do not match' });
     } else {
         try {
 
-            const newUser = await postUser(firstName, lastName, email, password);
+            const newUser = await postUser(first_name, last_name, email, password);
 
             if (newUser) {
                 console.log('INSERT NEW USER', newUser);
