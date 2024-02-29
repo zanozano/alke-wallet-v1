@@ -48,7 +48,8 @@ router.get('/profile', isAuthenticated, async (req, res) => {
 
 router.get('/transfer', isAuthenticated, async (req, res) => {
     try {
-        res.render('Transfer', { layout: 'main', currentUrl: req.originalUrl });
+        const user = req.session.user;
+        res.render('Transfer', { user, layout: 'main', currentUrl: req.originalUrl });
     } catch (error) {
         handleError(res, error);
     }
@@ -56,7 +57,8 @@ router.get('/transfer', isAuthenticated, async (req, res) => {
 
 router.get('/settings', isAuthenticated, async (req, res) => {
     try {
-        res.render('Settings', { layout: 'main', currentUrl: req.originalUrl });
+        const user = req.session.user;
+        res.render('Settings', { user, layout: 'main', currentUrl: req.originalUrl });
     } catch (error) {
         handleError(res, error);
     }

@@ -49,12 +49,20 @@ app.engine(
             ...handlebarsHelpers,
             ...customHelpers,
             isAuthenticated: function () {
-                return !!req.session.user;
+                return res.locals.isAuthenticated;
             },
         },
     })
 );
 
+app.use((req, res, next) => {
+    if (req.session && req.session.user) {
+        res.locals.isAuthenticated = true;
+    } else {
+        res.locals.isAuthenticated = false;
+    }
+    next();
+});
 
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'src/views'));
@@ -68,6 +76,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+app.get('/users', async (req, res) => {
+    const data = await getUsers();
+    res.send(data);
 });
 
 app.post('/verify', async (req, res) => {
