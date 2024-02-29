@@ -34,7 +34,6 @@ CREATE TABLE credit_transactions (
     credit_account_id UUID,
     amount DECIMAL(15, 2) NOT NULL,
     transaction_type VARCHAR(50) NOT NULL,
-    -- 'deposit', 'withdrawal', 'transfer_in', 'transfer_out'
     reference_id UUID,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (credit_account_id) REFERENCES credit_accounts(id)
@@ -45,7 +44,6 @@ CREATE TABLE savings_transactions (
     savings_account_id UUID,
     amount DECIMAL(15, 2) NOT NULL,
     transaction_type VARCHAR(50) NOT NULL,
-    -- 'deposit', 'withdrawal', 'transfer_in', 'transfer_out'
     reference_id UUID,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (savings_account_id) REFERENCES savings_accounts(id)
@@ -59,11 +57,19 @@ VALUES (
         '123456'
     );
 --
-SELECT id INTO new_user_id
-FROM users
-ORDER BY id DESC
-LIMIT 1;
+INSERT INTO users (first_name, last_name, email, password)
+VALUES (
+        'John',
+        'Doe',
+        'john@alkewallet.com',
+        '123456'
+    );
 --
+DO $$
+DECLARE user_record RECORD;
+BEGIN FOR user_record IN
+SELECT *
+FROM users LOOP
 INSERT INTO credit_accounts (
         user_id,
         balance,
@@ -71,18 +77,19 @@ INSERT INTO credit_accounts (
         expiration_date,
         cvv
     )
-SELECT u.id AS user_id,
-    100000 AS balance,
-    (
-        SELECT STRING_AGG(FLOOR(RANDOM() * 10)::TEXT, '')
-        FROM GENERATE_SERIES(1, 16)
-    ) AS credit_card_number,
-    CURRENT_DATE + INTERVAL '1 year' * (FLOOR(RANDOM() * 10) + 1) AS expiration_date,
-    (
-        SELECT STRING_AGG(FLOOR(RANDOM() * 10)::TEXT, '')
-        FROM GENERATE_SERIES(1, 3)
-    ) AS cvv
-FROM users u;
+VALUES (
+        user_record.id,
+        100000,
+        (
+            SELECT STRING_AGG(FLOOR(RANDOM() * 10)::TEXT, '')
+            FROM GENERATE_SERIES(1, 16)
+        ),
+        CURRENT_DATE + INTERVAL '1 year' * (FLOOR(RANDOM() * 10) + 1),
+        (
+            SELECT STRING_AGG(FLOOR(RANDOM() * 10)::TEXT, '')
+            FROM GENERATE_SERIES(1, 3)
+        )
+    );
 INSERT INTO savings_accounts (
         user_id,
         balance,
@@ -90,18 +97,21 @@ INSERT INTO savings_accounts (
         expiration_date,
         cvv
     )
-SELECT u.id AS user_id,
-    100000 AS balance,
-    (
-        SELECT STRING_AGG(FLOOR(RANDOM() * 10)::TEXT, '')
-        FROM GENERATE_SERIES(1, 16)
-    ) AS credit_card_number,
-    CURRENT_DATE + INTERVAL '1 year' * (FLOOR(RANDOM() * 10) + 1) AS expiration_date,
-    (
-        SELECT STRING_AGG(FLOOR(RANDOM() * 10)::TEXT, '')
-        FROM GENERATE_SERIES(1, 3)
-    ) AS cvv
-FROM users u;
+VALUES (
+        user_record.id,
+        100000,
+        (
+            SELECT STRING_AGG(FLOOR(RANDOM() * 10)::TEXT, '')
+            FROM GENERATE_SERIES(1, 16)
+        ),
+        CURRENT_DATE + INTERVAL '1 year' * (FLOOR(RANDOM() * 10) + 1),
+        (
+            SELECT STRING_AGG(FLOOR(RANDOM() * 10)::TEXT, '')
+            FROM GENERATE_SERIES(1, 3)
+        )
+    );
+END LOOP;
+END $$;
 --
 SELECT u.id AS user_id,
     u.first_name,
