@@ -8,10 +8,10 @@
                 <div class="form-floating">
                     <select class="form-select" id="floatingSelectGrid">
                         <option selected>Select an option</option>
-                        <option value="1">Credit Account</option>
-                        <option value="2">Saving Account</option>
+                        <option value="credit_card_number">Credit Account: {{ user.credit_card_number}}</option>
+                        <option value="savings_card_number">Saving Account: {{ user.savings_card_number}}</option>
                     </select>
-                    <label for="floatingSelectGrid">Select Account</label>
+                    <label for="floatingSelectGrid">Select account</label>
                 </div>
                 <div class="form-floating">
                     <select class="form-select" id="floatingSelectGrid">
@@ -19,7 +19,7 @@
                         <option value="1">User 1</option>
                         <option value="2">User 2</option>
                     </select>
-                    <label for="floatingSelectGrid">Select Account</label>
+                    <label for="floatingSelectGrid">Select user</label>
                 </div>
                 <div class="form-floating">
                     <input type="number" class="form-control" id="amount" name="amount" placeholder="Amount">
