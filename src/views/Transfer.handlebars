@@ -5,13 +5,23 @@
     <div class="transfer-container">
         <form onsubmit="event.preventDefault();">
             <div class="d-flex flex-column gap-3">
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary flex-grow-1">Withdrawal</button>
+                    <button class="btn btn-primary flex-grow-1">Deposit</button>
+                </div>
+                <div class="d-flex gap-3">
+                    <h4>Balance</h4>
+                    <div id="balanceDisplay">
+                    </div>
+                </div>
+                {{!-- aqui --}}
                 <div class="form-floating">
-                    <select class="form-select" id="floatingSelectGrid">
+                    <select class="form-select" id="accountSelect">
                         <option selected>Select an option</option>
-                        <option value="credit_card_number">Credit Account: {{ user.credit_card_number}}</option>
-                        <option value="savings_card_number">Saving Account: {{ user.savings_card_number}}</option>
+                        <option value="credit">Credit Account: {{ user.credit_card_number}}</option>
+                        <option value="savings">Saving Account: {{ user.savings_card_number}}</option>
                     </select>
-                    <label for="floatingSelectGrid">Select account</label>
+                    <label for="accountSelect">Select account</label>
                 </div>
                 <div class="form-floating">
                     <select class="form-select" id="userSelect">
@@ -23,7 +33,7 @@
                     <input type="number" class="form-control" id="amount" name="amount" placeholder="Amount">
                     <label for="amount">Amount</label>
                 </div>
-                <button type="button" class="btn btn-primary" onclick='verify()'>Confirm</button>
+                <button type="button" class="btn btn-primary">Confirm</button>
             </div>
         </form>
         <div>
@@ -58,5 +68,20 @@
         }
 
         renderUserOptions();
+    });
+
+    //
+    const accountSelect = document.getElementById('accountSelect');
+    accountSelect.addEventListener('change', function () {
+        const selectedOption = accountSelect.value;
+        const balanceDisplay = document.getElementById('balanceDisplay');
+
+        if (selectedOption === 'credit') {
+            balanceDisplay.innerHTML = `{{ user.credit_balance }}`;
+        } else if (selectedOption === 'savings') {
+            balanceDisplay.innerHTML = `{{ user.savings_balance }}`;
+        } else {
+            balanceDisplay.innerHTML = '';
+        }
     });
 </script>
