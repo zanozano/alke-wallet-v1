@@ -10,13 +10,14 @@ const isAuthenticated = (req, res, next) => {
     if (req.session && req.session.user) {
         next();
     } else {
-        res.redirect('/signin');
+        res.redirect('/login');
     }
 };
 
 router.get('/', async (req, res) => {
     try {
-        res.render('Home', { layout: 'main' });
+        const user = req.session.user;
+        res.render('Home', { user, layout: 'main' });
     } catch (error) {
         handleError(res, error);
     }

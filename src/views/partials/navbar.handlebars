@@ -7,6 +7,10 @@
                     <p>
                         Alke Wallet
                     </p>
+                    {{#if isAuthenticated}}
+                    |
+                    <p>Bienvenido {{ user.first_name }}</p>
+                    {{/if}}
                 </div>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"

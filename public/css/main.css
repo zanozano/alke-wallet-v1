@@ -30,6 +30,12 @@ body {
         font-weight: 700;
         margin: 0;
     }
+
+    & p:last-child {
+        font-size: 1.1rem;
+        font-weight: 400;
+        margin: 0;
+    }
 }
 
 
