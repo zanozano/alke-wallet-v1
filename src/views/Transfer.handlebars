@@ -2,4 +2,34 @@
 
     {{> navprofile}}
 
+    <div class="transfer-container">
+        <form onsubmit="event.preventDefault();">
+            <div class="d-flex flex-column gap-3">
+                <div class="form-floating">
+                    <select class="form-select" id="floatingSelectGrid">
+                        <option selected>Select an option</option>
+                        <option value="1">Credit Account</option>
+                        <option value="2">Saving Account</option>
+                    </select>
+                    <label for="floatingSelectGrid">Select Account</label>
+                </div>
+                <div class="form-floating">
+                    <select class="form-select" id="floatingSelectGrid">
+                        <option selected>Select an user</option>
+                        <option value="1">User 1</option>
+                        <option value="2">User 2</option>
+                    </select>
+                    <label for="floatingSelectGrid">Select Account</label>
+                </div>
+                <div class="form-floating">
+                    <input type="number" class="form-control" id="amount" name="amount" placeholder="Amount">
+                    <label for="amount">Amount</label>
+                </div>
+                <button type="button" class="btn btn-primary" onclick='verify()'>Confirm</button>
+            </div>
+        </form>
+        <div>
+            <img src="./img/deposit-img.svg" alt="deposit">
+        </div>
+    </div>
 </div>
