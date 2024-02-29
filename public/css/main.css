@@ -219,7 +219,7 @@ body {
     border-radius: 0.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1.6rem;
+    gap: 2.4rem;
     min-height: 50vh;
     padding: 1.6rem;
 
@@ -395,6 +395,7 @@ body {
     align-self: center;
     width: 260px;
     height: auto;
+    margin: 0 auto;
 }
 
 .profile-info {

@@ -14,12 +14,10 @@
                     <label for="floatingSelectGrid">Select account</label>
                 </div>
                 <div class="form-floating">
-                    <select class="form-select" id="floatingSelectGrid">
-                        <option selected>Select an user</option>
-                        <option value="1">User 1</option>
-                        <option value="2">User 2</option>
+                    <select class="form-select" id="userSelect">
+                        {{!-- --}}
                     </select>
-                    <label for="floatingSelectGrid">Select user</label>
+                    <label for="userSelect">Select user</label>
                 </div>
                 <div class="form-floating">
                     <input type="number" class="form-control" id="amount" name="amount" placeholder="Amount">
@@ -33,3 +31,32 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", async function () {
+        async function getUsersData() {
+            try {
+                const response = await fetch('/users');
+                const usersData = await response.json();
+                console.log(usersData);
+                return usersData;
+            } catch (error) {
+                console.error('Error fetching users data:', error);
+            }
+        }
+
+        async function renderUserOptions() {
+            const usersData = await getUsersData();
+            const userOptionTemplate = Handlebars.compile(`
+                {{#each users}}
+                    <option value="{{user_id}}">{{first_name}} {{last_name}}</option>
+                {{/each}}
+            `);
+            const userSelect = document.getElementById('userSelect');
+            userSelect.innerHTML = userOptionTemplate({ users: usersData });
+        }
+
+        renderUserOptions();
+    });
+</script>
