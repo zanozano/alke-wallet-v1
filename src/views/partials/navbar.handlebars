@@ -23,7 +23,7 @@
                         <a class="nav-link" id="profileLink" href="/profile">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="logoutLink" href="/">Logout</a>
+                        <a class="nav-link" id="logoutLink" href="#" onclick="signOut()">Logout</a>
                     </li>
                     {{else}}
                     <li class="nav-item">
@@ -48,7 +48,7 @@
             confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.post('/signout', {}, { withCredentials: true })
+                axios.post('/logout', {}, { withCredentials: true })
                     .then(response => {
                         if (response.status === 200) {
                             localStorage.removeItem('sessionToken');

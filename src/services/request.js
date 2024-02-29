@@ -11,14 +11,14 @@ async function getUsers() {
     }
 }
 
-async function postUser(email, first_name, last_name, password) {
+async function postUser(first_name, last_name, email, password) {
 
     try {
         const query = `
-		INSERT INTO users (email, first_name, last_name, password)
+		INSERT INTO users (first_name, last_name, email, password)
 		VALUES ($1, $2, $3, $4)
 		RETURNING *`;
-        const values = [email, first_name, last_name, password];
+        const values = [first_name, last_name, email, password];
         const result = await pool.query(query, values);
         return result.rows[0];
     } catch (error) {
@@ -32,12 +32,19 @@ async function getLogin(email, password) {
         const query = 'SELECT * FROM users WHERE email = $1 AND password = $2';
         const values = [email, password];
         const result = await pool.query(query, values);
-        return result.rows[0];
+        const user = result.rows[0];
+        if (user) {
+            console.log(user);
+            return user;
+        } else {
+            return null;
+        }
     } catch (error) {
         console.error('Error in getLogin:', error);
         throw error;
     }
 }
+
 
 async function putUser(first_name, last_name, password, email,) {
     try {

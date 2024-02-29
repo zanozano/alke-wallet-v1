@@ -72,30 +72,25 @@ app.listen(PORT, () => {
 
 app.post('/verify', async (req, res) => {
     const { email, password } = req.body;
-    const user = await getLogin(email, password);
     if (email === '' || password === '') {
         res.status(401).send({
             error: 'Please fill out all the fields',
             code: 401,
         });
     } else {
-        if (user.length != 0) {
-            if (user.validate === true) {
-                req.session.user = user;
-                const token = jwt.sign(
-                    {
-                        exp: Math.floor(Date.now() / 1000) + 180,
-                        data: user,
-                    },
-                    secretKey
-                );
-                res.send(token);
-            } else {
-                res.status(401).send({
-                    error: 'The registration for this user has not been approved',
-                    code: 401,
-                });
-            }
+        const user = await getLogin(email, password);
+        console.log(user)
+        if (user) {
+            req.session.user = user;
+            const token = jwt.sign(
+                {
+                    exp: Math.floor(Date.now() / 1000) + 180,
+                    data: user,
+                },
+                secretKey
+            );
+            res.send(token);
+
         } else {
             res.status(404).send({
                 error: 'This user is not registered, or the password is incorrect',
@@ -105,13 +100,14 @@ app.post('/verify', async (req, res) => {
     }
 });
 
+
 app.post('/create', async (req, res) => {
     const { first_name, last_name, email, password, repeat_password } = req.body;
 
     if (!first_name || !last_name || !email || !password || !repeat_password ||
         typeof first_name !== 'string' || typeof last_name !== 'string' || typeof email !== 'string' ||
         typeof password !== 'string' || typeof repeat_password !== 'string') {
-        res.status(400).json({ success: false, message: 'All fields are required and must be non-empty strings' });
+        res.status(400).json({ success: false, message: 'All fields are required' });
         return;
     }
 
@@ -133,4 +129,16 @@ app.post('/create', async (req, res) => {
             res.status(500).json({ success: false, message: `Something went wrong... ${error.message}` });
         }
     }
+});
+
+
+app.post('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Failed to destroy session:', err);
+            res.status(500).send('Internal Server Error');
+        } else {
+            res.status(200).send('OK');
+        }
+    });
 });
