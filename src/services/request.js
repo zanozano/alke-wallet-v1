@@ -2,11 +2,64 @@ const pool = require('./pool');
 
 async function getUsers() {
     try {
-        const query = 'SELECT * FROM users';
+        const query = `
+            SELECT 
+                u.id AS user_id, 
+                u.first_name, 
+                u.last_name, 
+                u.email, 
+                c.credit_card_number AS credit_card_number,
+                c.expiration_date AS credit_card_expiration_date,
+                c.cvv AS credit_card_cvv,
+                c.balance AS credit_balance,
+                s.credit_card_number AS savings_card_number,
+                s.expiration_date AS savings_card_expiration_date,
+                s.cvv AS savings_card_cvv,
+                s.balance AS savings_balance
+            FROM 
+                users u
+            LEFT JOIN 
+                credit_accounts c ON u.id = c.user_id
+            LEFT JOIN 
+                savings_accounts s ON u.id = s.user_id`;
+
         const result = await pool.query(query);
         return result.rows;
     } catch (error) {
         console.error('Error fetching users:', error);
+        throw error;
+    }
+}
+
+async function getUserData(userId) {
+    try {
+        const query = `
+            SELECT 
+                u.id AS user_id, 
+                u.first_name, 
+                u.last_name, 
+                u.email, 
+                c.credit_card_number AS credit_card_number,
+                c.expiration_date AS credit_card_expiration_date,
+                c.cvv AS credit_card_cvv,
+                c.balance AS credit_balance,
+                s.credit_card_number AS savings_card_number,
+                s.expiration_date AS savings_card_expiration_date,
+                s.cvv AS savings_card_cvv,
+                s.balance AS savings_balance
+            FROM 
+                users u
+            LEFT JOIN 
+                credit_accounts c ON u.id = c.user_id
+            LEFT JOIN 
+                savings_accounts s ON u.id = s.user_id
+            WHERE
+                u.id = $1`;
+        const values = [userId];
+        const result = await pool.query(query, values);
+        return result.rows[0];
+    } catch (error) {
+        console.error('Error fetching user data:', error);
         throw error;
     }
 }
@@ -76,4 +129,4 @@ async function deleteUser(email) {
     }
 }
 
-module.exports = { getUsers, postUser, getLogin, putUser, deleteUser };
+module.exports = { getUsers, getUserData, postUser, getLogin, putUser, deleteUser };

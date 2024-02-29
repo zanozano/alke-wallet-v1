@@ -32,11 +32,13 @@
                         {{/if}}
                     </div>
                     <div>
-                        ********
+                        <div>
+                            {{ user.credit_balance}}
+                        </div>
                     </div>
                     <div>
                         <hr>
-                        <p>3547 5749 57684 ***</p>
+                        <p>{{user.credit_card_number}}</p>
                     </div>
                 </div>
                 <div class="card-container">
@@ -55,11 +57,11 @@
                         {{/if}}
                     </div>
                     <div>
-                        ********
+                        {{ user.savings_balance}}
                     </div>
                     <div>
                         <hr>
-                        <p>3547 5749 57684 ***</p>
+                        <p>{{ user.savings_card_number}}</p>
                     </div>
                 </div>
             </div>
@@ -91,22 +93,22 @@
                     <tbody>
                         <tr>
                             <td>2024-02-28</td>
-                            <td><i class="fa-solid fa-receipt"></i>Purchase</td>
+                            <td>Transfer</td>
                             <td>$50.00</td>
                         </tr>
                         <tr>
                             <td>2024-02-27</td>
-                            <td><i class="fa-solid fa-money-bill-transfer"></i>Deposit</td>
+                            <td>Deposit</td>
                             <td>$100.00</td>
                         </tr>
                         <tr>
                             <td>2024-02-27</td>
-                            <td><i class="fa-solid fa-money-bill-transfer"></i>Deposit</td>
+                            <td>Deposit</td>
                             <td>$100.00</td>
                         </tr>
                         <tr>
                             <td>2024-02-27</td>
-                            <td><i class="fa-solid fa-money-bill-transfer"></i>Deposit</td>
+                            <td>Deposit</td>
                             <td>$1400.00</td>
                         </tr>
                     </tbody>

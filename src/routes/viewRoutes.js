@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Handlebars = require('handlebars');
+
 Handlebars.registerHelper('isActive', function (url, currentUrl) {
     return currentUrl === url ? 'active' : '';
 });
@@ -40,6 +41,7 @@ router.get('/create', async (req, res) => {
 router.get('/profile', isAuthenticated, async (req, res) => {
     try {
         const user = req.session.user;
+        console.log(user);
         res.render('Profile', { user, layout: 'main', currentUrl: req.originalUrl });
     } catch (error) {
         handleError(res, error);

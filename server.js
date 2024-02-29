@@ -30,7 +30,7 @@ const isAuthenticated = (req, res, next) => {
 
 app.use(isAuthenticated);
 
-const { getUsers, postUser, getLogin, putUser, deleteUser, } = require('./src/services/request');
+const { getUsers, getUserData, postUser, getLogin, putUser, deleteUser, } = require('./src/services/request');
 
 const handlebarsHelpers = require('handlebars-helpers')();
 const customHelpers = {
@@ -94,16 +94,23 @@ app.post('/verify', async (req, res) => {
         const user = await getLogin(email, password);
         console.log(user)
         if (user) {
-            req.session.user = user;
-            const token = jwt.sign(
-                {
-                    exp: Math.floor(Date.now() / 1000) + 180,
-                    data: user,
-                },
-                secretKey
-            );
-            res.send(token);
-
+            const userData = await getUserData(user.id);
+            if (userData) {
+                req.session.user = userData;
+                const token = jwt.sign(
+                    {
+                        exp: Math.floor(Date.now() / 1000) + 180,
+                        data: userData,
+                    },
+                    secretKey
+                );
+                res.send(token);
+            } else {
+                res.status(500).send({
+                    error: 'Failed to retrieve user data',
+                    code: 500,
+                });
+            }
         } else {
             res.status(404).send({
                 error: 'This user is not registered, or the password is incorrect',
@@ -112,6 +119,7 @@ app.post('/verify', async (req, res) => {
         }
     }
 });
+
 
 
 app.post('/create', async (req, res) => {
