@@ -120,8 +120,6 @@ app.post('/verify', async (req, res) => {
     }
 });
 
-
-
 app.post('/create', async (req, res) => {
     const { first_name, last_name, email, password, repeat_password } = req.body;
 
@@ -151,7 +149,6 @@ app.post('/create', async (req, res) => {
         }
     }
 });
-
 
 app.post('/logout', (req, res) => {
     req.session.destroy((err) => {
