@@ -10,6 +10,7 @@
 
 .icon-btn {
     align-items: center;
+    aspect-ratio: 1/1;
     background-color: var(--tertiary);
     border-radius: 100px;
     color: var(--primary);
@@ -17,11 +18,22 @@
     display: flex;
     height: 38px;
     justify-content: center;
-    width: 38px;
     transition: all 0.4s;
+    width: 38px;
 }
 
 .icon-btn:hover {
     background-color: var(--secondary);
     color: var(--tertiary);
+}
+
+
+.profile-picture {
+    position: relative;
+
+    & span {
+        position: absolute;
+        right: 12px;
+        bottom: 12px;
+    }
 }

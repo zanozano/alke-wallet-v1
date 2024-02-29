@@ -313,15 +313,58 @@ body {
     }
 }
 
+.accounts {
+    flex-direction: column;
+    display: flex;
+    flex-grow: 1;
+
+    & h2 {
+        margin: 0;
+        align-self: center;
+    }
+
+    @media (max-width: 991px) {
+        h2 {
+            width: 100%;
+            text-align: center;
+        }
+    }
+}
 
 .table-transaction {
-    min-width: 40%;
+    flex-direction: column;
+    display: flex;
+    flex-grow: 1;
+
+    & h2 {
+        margin: 0;
+        align-self: center;
+    }
+
+    @media (max-width: 991px) {
+        h2 {
+            width: 100%;
+            text-align: center;
+        }
+    }
 }
 
 .chart {
     flex-direction: column;
     display: flex;
+    flex-grow: 1;
 
+    & h2 {
+        margin: 0;
+        align-self: center;
+    }
+
+    @media (max-width: 991px) {
+        h2 {
+            width: 100%;
+            text-align: center;
+        }
+    }
 }
 
 .pie-chart {
