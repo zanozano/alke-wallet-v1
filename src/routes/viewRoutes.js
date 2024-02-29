@@ -5,6 +5,14 @@ Handlebars.registerHelper('isActive', function (url, currentUrl) {
     return currentUrl === url ? 'active' : '';
 });
 
+const isAuthenticated = (req, res, next) => {
+    if (req.session && req.session.user) {
+        next();
+    } else {
+        res.redirect('/signin');
+    }
+};
+
 router.get('/', async (req, res) => {
     try {
         res.render('Home', { layout: 'main' });
@@ -29,15 +37,16 @@ router.get('/create', async (req, res) => {
     }
 });
 
-router.get('/profile', async (req, res) => {
+router.get('/profile', isAuthenticated, async (req, res) => {
     try {
-        res.render('Profile', { layout: 'main', currentUrl: req.originalUrl });
+        const user = req.session.user;
+        res.render('Profile', { user, layout: 'main', currentUrl: req.originalUrl });
     } catch (error) {
         handleError(res, error);
     }
 });
 
-router.get('/transfer', async (req, res) => {
+router.get('/transfer', isAuthenticated, async (req, res) => {
     try {
         res.render('Transfer', { layout: 'main', currentUrl: req.originalUrl });
     } catch (error) {
@@ -45,7 +54,7 @@ router.get('/transfer', async (req, res) => {
     }
 });
 
-router.get('/settings', async (req, res) => {
+router.get('/settings', isAuthenticated, async (req, res) => {
     try {
         res.render('Settings', { layout: 'main', currentUrl: req.originalUrl });
     } catch (error) {

@@ -8,12 +8,13 @@
         </h1>
     </div>
     <img class="animate__animated animate__fadeInUp" src="./img/saving.svg" alt="saving" />
+    {{#unless isAuthenticated}}
     <div>
         <a href="./create">
             <button class="btn btn-primary">Create Account</button>
         </a>
-
     </div>
+    {{/unless}}
 </div>
 
 <section class="table-currency">

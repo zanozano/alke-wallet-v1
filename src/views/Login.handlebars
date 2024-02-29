@@ -41,7 +41,17 @@
         const password = document.getElementById('password').value;
         const payload = { email, password };
 
+        if (email.trim() === '' || password.trim() === '') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Please enter both email and password'
+            });
+            return;
+        }
+
         try {
+            const { data: token } = await axios.post('/verify', payload);
 
             Swal.fire({
                 icon: 'success',
@@ -51,7 +61,7 @@
             });
 
             setTimeout(() => {
-                window.location.replace(`/profile`);
+                window.location.replace(`/profile?token=${token}`);
             }, 1500);
 
         } catch ({ response }) {

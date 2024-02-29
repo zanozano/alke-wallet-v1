@@ -27,18 +27,6 @@ async function postUser(email, first_name, last_name, password) {
     }
 }
 
-async function putStatusUser(id, validate) {
-    try {
-        const query = `UPDATE users SET validate = $1 WHERE id = $2 RETURNING *`;
-        const values = [validate, id];
-        const result = await pool.query(query, values);
-        return result.rows[0];
-    } catch (error) {
-        console.error('Error in putStatusUser:', error);
-        throw error;
-    }
-}
-
 async function getLogin(email, password) {
     try {
         const query = 'SELECT * FROM users WHERE email = $1 AND password = $2';
@@ -81,4 +69,4 @@ async function deleteUser(email) {
     }
 }
 
-module.exports = { getUsers, postUser, putStatusUser, getLogin, putUser, deleteUser };
+module.exports = { getUsers, postUser, getLogin, putUser, deleteUser };

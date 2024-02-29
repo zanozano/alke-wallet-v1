@@ -6,6 +6,38 @@ const path = require('path');
 const userRoutes = require('./src/routes/viewRoutes');
 const config = require('./config');
 const PORT = config.port;
+const session = require('express-session');
+
+const jwt = require('jsonwebtoken');
+const secretKey = config.secretKey;
+
+app.use(
+    session({
+        secret: secretKey,
+        resave: false,
+        saveUninitialized: true,
+    })
+);
+
+const isAuthenticated = (req, res, next) => {
+    if (req.session && req.session.user) {
+        res.locals.isAuthenticated = true;
+    } else {
+        res.locals.isAuthenticated = false;
+    }
+    next();
+};
+
+app.use(isAuthenticated);
+
+const { getUsers, postUser, getLogin, putUser, deleteUser, } = require('./src/services/request');
+
+const handlebarsHelpers = require('handlebars-helpers')();
+const customHelpers = {
+    eq: function (a, b) {
+        return a === b;
+    },
+};
 
 app.engine(
     'handlebars',
@@ -13,10 +45,16 @@ app.engine(
         defaultLayout: 'main',
         layoutsDir: path.join(__dirname, 'src/views/layouts'),
         partialsDir: path.join(__dirname, 'src/views/partials'),
+        helpers: {
+            ...handlebarsHelpers,
+            ...customHelpers,
+            isAuthenticated: function () {
+                return !!req.session.user;
+            },
+        },
     })
 );
 
-const { getUsers, postUser, putStatusUser, getLogin, putUser, deleteUser, } = require('./src/services/request');
 
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'src/views'));
@@ -32,7 +70,40 @@ app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
 
-
+app.post('/verify', async (req, res) => {
+    const { email, password } = req.body;
+    const user = await getLogin(email, password);
+    if (email === '' || password === '') {
+        res.status(401).send({
+            error: 'Please fill out all the fields',
+            code: 401,
+        });
+    } else {
+        if (user.length != 0) {
+            if (user.validate === true) {
+                req.session.user = user;
+                const token = jwt.sign(
+                    {
+                        exp: Math.floor(Date.now() / 1000) + 180,
+                        data: user,
+                    },
+                    secretKey
+                );
+                res.send(token);
+            } else {
+                res.status(401).send({
+                    error: 'The registration for this user has not been approved',
+                    code: 401,
+                });
+            }
+        } else {
+            res.status(404).send({
+                error: 'This user is not registered, or the password is incorrect',
+                code: 404,
+            });
+        }
+    }
+});
 
 app.post('/create', async (req, res) => {
     const { first_name, last_name, email, password, repeat_password } = req.body;
