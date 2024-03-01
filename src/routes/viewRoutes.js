@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const { getUsers } = require('../services/request');
+
 const Handlebars = require('handlebars');
 
 Handlebars.registerHelper('isActive', function (url, currentUrl) {
@@ -53,7 +55,8 @@ router.get('/profile', isAuthenticated, async (req, res) => {
 router.get('/transfer', isAuthenticated, async (req, res) => {
     try {
         const user = req.session.user;
-        res.render('Transfer', { user, layout: 'main', currentUrl: req.originalUrl });
+        const allUsers = await getUsers();
+        res.render('Transfer', { user, allUsers, layout: 'main', currentUrl: req.originalUrl });
     } catch (error) {
         handleError(res, error);
     }

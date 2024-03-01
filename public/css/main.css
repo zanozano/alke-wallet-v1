@@ -220,7 +220,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 2.4rem;
-    min-height: 50vh;
+    min-height: 55vh;
     padding: 1.6rem;
 
     & h3 {
