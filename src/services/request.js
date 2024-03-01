@@ -36,23 +36,21 @@ async function getUser(userId) {
     try {
         const query = `
             SELECT
-            u.id AS user_id,
-            u.first_name,
-            u.last_name,
-            u.email,
-            u.password,
-            c.credit_card_number AS credit_card_number,
-            c.expiration_date AS credit_card_expiration_date,
-            c.cvv AS credit_card_cvv,
-            c.balance AS credit_balance,
-            s.credit_card_number AS savings_card_number,
-            s.expiration_date AS savings_card_expiration_date,
-            s.cvv AS savings_card_cvv,
-            s.balance AS savings_balance,
-            ct.amount AS credit_transaction_amount,
-            ct.transaction_type AS credit_transaction_type,
-            st.amount AS savings_transaction_amount,
-            st.transaction_type AS savings_transaction_type
+                u.id AS user_id,
+                u.first_name,
+                u.last_name,
+                u.email,
+                u.password,
+                c.credit_card_number,
+                c.expiration_date AS credit_card_expiration_date,
+                c.cvv AS credit_card_cvv,
+                c.balance AS credit_balance,
+                s.savings_card_number,
+                s.expiration_date AS savings_card_expiration_date,
+                s.cvv AS savings_card_cvv,
+                s.balance AS savings_balance,
+                'credit' AS credit_transaction_account_type,
+                'savings' AS savings_transaction_account_type
             FROM
                 users u
             LEFT JOIN
@@ -60,9 +58,9 @@ async function getUser(userId) {
             LEFT JOIN
                 savings_accounts s ON u.id = s.user_id
             LEFT JOIN
-                credit_transactions ct ON c.id = ct.credit_account_id
+                credit_transactions_history ct ON c.id = ct.account_id
             LEFT JOIN
-                savings_transactions st ON s.id = st.savings_account_id
+                savings_transactions_history st ON s.id = st.account_id
             WHERE
                 u.id = $1`;
         const values = [userId];
