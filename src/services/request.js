@@ -3,26 +3,34 @@ const pool = require('./pool');
 async function getUsers() {
     try {
         const query = `
-            SELECT 
-                u.id AS user_id, 
-                u.first_name, 
-                u.last_name, 
-                u.email,
-                u.password,
-                c.credit_card_number AS credit_card_number,
-                c.expiration_date AS credit_card_expiration_date,
-                c.cvv AS credit_card_cvv,
-                c.balance AS credit_balance,
-                s.credit_card_number AS savings_card_number,
-                s.expiration_date AS savings_card_expiration_date,
-                s.cvv AS savings_card_cvv,
-                s.balance AS savings_balance
-            FROM 
+            SELECT
+            u.id AS user_id,
+            u.first_name,
+            u.last_name,
+            u.email,
+            u.password,
+            c.credit_card_number AS credit_card_number,
+            c.expiration_date AS credit_card_expiration_date,
+            c.cvv AS credit_card_cvv,
+            c.balance AS credit_balance,
+            s.credit_card_number AS savings_card_number,
+            s.expiration_date AS savings_card_expiration_date,
+            s.cvv AS savings_card_cvv,
+            s.balance AS savings_balance,
+            ct.amount AS credit_transaction_amount,
+            ct.transaction_type AS credit_transaction_type,
+            st.amount AS savings_transaction_amount,
+            st.transaction_type AS savings_transaction_type
+            FROM
                 users u
-            LEFT JOIN 
+            LEFT JOIN
                 credit_accounts c ON u.id = c.user_id
-            LEFT JOIN 
-                savings_accounts s ON u.id = s.user_id`;
+            LEFT JOIN
+                savings_accounts s ON u.id = s.user_id
+            LEFT JOIN
+                credit_transactions ct ON c.id = ct.credit_account_id
+            LEFT JOIN
+                savings_transactions st ON s.id = st.savings_account_id;`;
 
         const result = await pool.query(query);
         return result.rows;
@@ -32,7 +40,7 @@ async function getUsers() {
     }
 }
 
-async function getUserData(userId) {
+async function getUser(userId) {
     try {
         const query = `
             SELECT 
@@ -49,12 +57,20 @@ async function getUserData(userId) {
                 s.expiration_date AS savings_card_expiration_date,
                 s.cvv AS savings_card_cvv,
                 s.balance AS savings_balance
+                ct.amount AS credit_transaction_amount,
+                ct.transaction_type AS credit_transaction_type,
+                st.amount AS savings_transaction_amount,
+                st.transaction_type AS savings_transaction_type
             FROM 
                 users u
             LEFT JOIN 
                 credit_accounts c ON u.id = c.user_id
             LEFT JOIN 
                 savings_accounts s ON u.id = s.user_id
+               LEFT JOIN
+                credit_transactions ct ON c.id = ct.credit_account_id
+            LEFT JOIN
+                savings_transactions st ON s.id = st.savings_account_id
             WHERE
                 u.id = $1`;
         const values = [userId];
@@ -131,4 +147,4 @@ async function deleteUser(email) {
     }
 }
 
-module.exports = { getUsers, getUserData, postUser, getLogin, putUser, deleteUser };
+module.exports = { getUsers, getUser, postUser, getLogin, putUser, deleteUser };

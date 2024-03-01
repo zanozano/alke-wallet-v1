@@ -30,7 +30,7 @@ const isAuthenticated = (req, res, next) => {
 
 app.use(isAuthenticated);
 
-const { getUsers, getUserData, postUser, getLogin, putUser, deleteUser, } = require('./src/services/request');
+const { getUser, getUsers, postUser, getLogin, putUser, deleteUser, } = require('./src/services/request');
 
 const handlebarsHelpers = require('handlebars-helpers')();
 const customHelpers = {
@@ -94,7 +94,7 @@ app.post('/verify', async (req, res) => {
         const user = await getLogin(email, password);
         console.log(user)
         if (user) {
-            const userData = await getUserData(user.id);
+            const userData = await getUser(user.id);
             if (userData) {
                 req.session.user = userData;
                 const token = jwt.sign(
