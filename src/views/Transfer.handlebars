@@ -33,6 +33,8 @@
                                     Saving Account | {{ user.savings_card_number}}
                                 </option>
                             </select>
+                            <div id="creditCardNumber" style="display: none;">{{ user.credit_card_number }}</div>
+                            <div id="savingsCardNumber" style="display: none;">{{ user.savings_card_number }}</div>
                             <label for="accountSelect">Select account</label>
                         </div>
                         <div class="form-floating">
@@ -102,9 +104,9 @@
             const amountSelect = document.getElementById('amountSelect').value.toString();
             const userId = '{{user.user_id}}';
             const formData = {
-                id: userId,
+                giver: userId,
                 account: selectedAccount,
-                user: selectedUser,
+                receiver: selectedUser,
                 type: depositSelect,
                 amount: amountSelect
             };
@@ -115,9 +117,9 @@
             }
 
             try {
+                console.log(formData)
                 axios.post('/transaction', formData)
                     .then(response => {
-                        console.log(response.data);
                         swal("Success", "Withdrawal successful", "success").then(() => {
                             form.reset();
                         });

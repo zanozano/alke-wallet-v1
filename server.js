@@ -30,7 +30,7 @@ const isAuthenticated = (req, res, next) => {
 
 app.use(isAuthenticated);
 
-const { getUser, getUsers, getLogin } = require('./src/services/request');
+const { getUser, getUsers, getLogin, newTransaction, getTransactions } = require('./src/services/request');
 
 const handlebarsHelpers = require('handlebars-helpers')();
 const customHelpers = {
@@ -80,6 +80,11 @@ app.listen(PORT, () => {
 
 app.get('/users', async (req, res) => {
     const data = await getUsers();
+    res.send(data);
+});
+
+app.get('/transactions', async (req, res) => {
+    const data = await getTransactions();
     res.send(data);
 });
 
@@ -150,9 +155,9 @@ app.post('/create', async (req, res) => {
     }
 });
 
-app.post('/transaction', (req, res) => {
-    const { id, account, user, type, amount } = req.body;
-    console.log(req.body)
+app.post('/transaction', async (req, res) => {
+    const { giver, account, receiver, amount, type } = req.body;
+    const transactionData = await newTransaction(giver, account, receiver, amount, type);
     res.status(200).json({ success: true, message: 'Transaction successful' });
 });
 
