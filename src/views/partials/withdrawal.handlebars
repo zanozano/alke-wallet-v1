@@ -1,0 +1,24 @@
+<form onsubmit="event.preventDefault();">
+    <div class="d-flex flex-column gap-3">
+
+        <div class="d-flex gap-3">
+            <h4>Balance</h4>
+            <div id="balanceDisplay">
+            </div>
+        </div>
+        {{!-- aqui --}}
+        <div class="form-floating">
+            <select class="form-select" id="accountSelect">
+                <option selected>Select an option</option>
+                <option value="credit">Credit Account: {{ user.credit_card_number}}</option>
+                <option value="savings">Saving Account: {{ user.savings_card_number}}</option>
+            </select>
+            <label for="accountSelect">Select account</label>
+        </div>
+        <div class="form-floating">
+            <input type="number" class="form-control" id="amount" name="amount" placeholder="Amount">
+            <label for="amount">Amount</label>
+        </div>
+        <button type="button" class="btn btn-primary">Confirm</button>
+    </div>
+</form>

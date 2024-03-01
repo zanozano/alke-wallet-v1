@@ -3,85 +3,46 @@
     {{> navprofile}}
 
     <div class="transfer-container">
-        <form onsubmit="event.preventDefault();">
-            <div class="d-flex flex-column gap-3">
-                <div class="d-flex gap-2">
-                    <button class="btn btn-primary flex-grow-1">Withdrawal</button>
-                    <button class="btn btn-primary flex-grow-1">Deposit</button>
-                </div>
-                <div class="d-flex gap-3">
-                    <h4>Balance</h4>
-                    <div id="balanceDisplay">
-                    </div>
-                </div>
-                {{!-- aqui --}}
-                <div class="form-floating">
-                    <select class="form-select" id="accountSelect">
-                        <option selected>Select an option</option>
-                        <option value="credit">Credit Account: {{ user.credit_card_number}}</option>
-                        <option value="savings">Saving Account: {{ user.savings_card_number}}</option>
-                    </select>
-                    <label for="accountSelect">Select account</label>
-                </div>
-                <div class="form-floating">
-                    <select class="form-select" id="userSelect">
-                        {{!-- --}}
-                    </select>
-                    <label for="userSelect">Select user</label>
-                </div>
-                <div class="form-floating">
-                    <input type="number" class="form-control" id="amount" name="amount" placeholder="Amount">
-                    <label for="amount">Amount</label>
-                </div>
-                <button type="button" class="btn btn-primary">Confirm</button>
+        <div class="select-trasnfer">
+            <h4>What action would you like to take?</h4>
+            <div>
+                <button id="withdrawalBtn" class="btn btn-primary flex-grow-1">Withdrawal
+                    <img src="./img/withdrawal-icon.svg" alt="transfer money">
+                </button>
+
+                <button id="depositBtn" class="btn btn-primary flex-grow-1">Deposit
+                    <img src="./img/transfer-icon.svg" alt="transfer money">
+                </button>
             </div>
-        </form>
+            <div id="withdrawalForm" class="form-container">
+                {{> withdrawal}}
+            </div>
+            <div id="depositForm" class="form-container" style="display: none;">
+                {{> deposit}}
+            </div>
+        </div>
+        {{!-- --}}
         <div>
-            <img src="./img/deposit-img.svg" alt="deposit">
+            <img src="./img/deposit-img.svg" alt="deposit-pig">
         </div>
     </div>
+
 </div>
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", async function () {
-        async function getUsersData() {
-            try {
-                const response = await fetch('/users');
-                const usersData = await response.json();
-                console.log(usersData);
-                return usersData;
-            } catch (error) {
-                console.error('Error fetching users data:', error);
-            }
-        }
+    const withdrawalBtn = document.getElementById('withdrawalBtn');
+    const depositBtn = document.getElementById('depositBtn');
+    const withdrawalForm = document.getElementById('withdrawalForm');
+    const depositForm = document.getElementById('depositForm');
 
-        async function renderUserOptions() {
-            const usersData = await getUsersData();
-            const userOptionTemplate = Handlebars.compile(`
-                {{#each users}}
-                    <option value="{{user_id}}">{{first_name}} {{last_name}}</option>
-                {{/each}}
-            `);
-            const userSelect = document.getElementById('userSelect');
-            userSelect.innerHTML = userOptionTemplate({ users: usersData });
-        }
-
-        renderUserOptions();
+    withdrawalBtn.addEventListener('click', function () {
+        withdrawalForm.style.display = 'block';
+        depositForm.style.display = 'none';
     });
 
-    //
-    const accountSelect = document.getElementById('accountSelect');
-    accountSelect.addEventListener('change', function () {
-        const selectedOption = accountSelect.value;
-        const balanceDisplay = document.getElementById('balanceDisplay');
-
-        if (selectedOption === 'credit') {
-            balanceDisplay.innerHTML = `{{ user.credit_balance }}`;
-        } else if (selectedOption === 'savings') {
-            balanceDisplay.innerHTML = `{{ user.savings_balance }}`;
-        } else {
-            balanceDisplay.innerHTML = '';
-        }
+    depositBtn.addEventListener('click', function () {
+        withdrawalForm.style.display = 'none';
+        depositForm.style.display = 'block';
     });
 </script>
