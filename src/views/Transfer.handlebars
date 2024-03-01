@@ -12,11 +12,58 @@
                     <img src="./img/transfer-icon.svg" alt="transfer money">
                 </button>
             </div>
-            <div id="withdrawalForm" class="form-container">
-                {{> withdrawal}}
-            </div>
-            <div id="depositForm" class="form-container" style="display: none;">
-                {{> deposit}}
+            <div id="depositForm" class="form-container">
+                <form>
+                    <div class="d-flex flex-column gap-3">
+
+                        <div class="d-flex gap-3">
+                            <h4>Balance</h4>
+                            <div id="balanceDisplay"></div>
+                        </div>
+
+                        <div class="form-floating">
+                            <select class="form-select" id="accountSelect">
+                                <option selected>
+                                    Select an option
+                                </option>
+                                <option value="credit">
+                                    Credit Account | {{ user.credit_card_number}}
+                                </option>
+                                <option value="savings">
+                                    Saving Account | {{ user.savings_card_number}}
+                                </option>
+                            </select>
+                            <label for="accountSelect">Select account</label>
+                        </div>
+                        <div class="form-floating">
+                            <select class="form-select" id="userSelect">
+                                <option selected>
+                                    Select an option
+                                </option>
+                                {{#each allUsers}}
+                                <option value="{{user_id}}">{{first_name}} {{last_name}}</option>
+                                {{/each}}
+                            </select>
+                            <label for="userSelect">Select user</label>
+                        </div>
+                        <div class="form-floating">
+                            <select class="form-select" id="depositSelect">
+                                <option selected>
+                                    Select an option
+                                </option>
+                                <option value="deposit">Deposit</option>
+                                <option value="withdrawal">Withdrawal</option>
+                            </select>
+                            <label for="depositSelect">Type</label>
+                        </div>
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="amountSelect" name="amountSelect"
+                                placeholder="Amount">
+                            <label for="amountSelect">Amount</label>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="confirmButton">Confirm</button>
+                    </div>
+                </form>
             </div>
         </div>
         {{!-- --}}
@@ -25,19 +72,64 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
-    const withdrawalBtn = document.getElementById('withdrawalBtn');
-    const depositBtn = document.getElementById('depositBtn');
-    const withdrawalForm = document.getElementById('withdrawalForm');
-    const depositForm = document.getElementById('depositForm');
+    document.addEventListener('DOMContentLoaded', function () {
 
-    withdrawalBtn.addEventListener('click', function () {
-        withdrawalForm.style.display = 'block';
-        depositForm.style.display = 'none';
-    });
+        const accountSelect = document.getElementById('accountSelect');
+        const balanceDisplay = document.getElementById('balanceDisplay');
+        const confirmButton = document.getElementById('confirmButton');
+        const form = document.querySelector('form');
 
-    depositBtn.addEventListener('click', function () {
-        withdrawalForm.style.display = 'none';
-        depositForm.style.display = 'block';
+        accountSelect.addEventListener('change', function () {
+            const selectedOption = accountSelect.value;
+            if (selectedOption === 'credit') {
+                balanceDisplay.textContent = '{{user.credit_balance}}';
+            } else if (selectedOption === 'savings') {
+                balanceDisplay.textContent = '{{user.savings_balance}}';
+            } else {
+                balanceDisplay.textContent = '';
+            }
+        });
+
+        confirmButton.addEventListener('click', function (e) {
+            e.preventDefault();
+            const selectedAccount = document.getElementById('accountSelect').value;
+            const selectedUser = document.getElementById('userSelect').value;
+            const depositSelect = document.getElementById('depositSelect').value;
+            const amountSelect = document.getElementById('amountSelect').value.toString();
+            const userId = '{{user.user_id}}';
+            const formData = {
+                id: userId,
+                account: selectedAccount,
+                user: selectedUser,
+                type: depositSelect,
+                amount: amountSelect
+            };
+
+            if (!selectedAccount || !selectedUser || !depositSelect || !amountSelect) {
+                swal("Error", "Please fill in all fields", "error");
+                return;
+            }
+
+            try {
+                axios.post('/transaction', formData)
+                    .then(response => {
+                        console.log(response.data);
+                        swal("Success", "Withdrawal successful", "success").then(() => {
+                            form.reset();
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        swal("Error", "An error occurred", "error");
+                    });
+            } catch (error) {
+                console.error('Error:', error);
+                swal("Error", "An error occurred", "error");
+            }
+        });
     });
 </script>

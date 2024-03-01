@@ -56,7 +56,7 @@ async function getUser(userId) {
                 s.credit_card_number AS savings_card_number,
                 s.expiration_date AS savings_card_expiration_date,
                 s.cvv AS savings_card_cvv,
-                s.balance AS savings_balance
+                s.balance AS savings_balance,
                 ct.amount AS credit_transaction_amount,
                 ct.transaction_type AS credit_transaction_type,
                 st.amount AS savings_transaction_amount,
@@ -67,7 +67,7 @@ async function getUser(userId) {
                 credit_accounts c ON u.id = c.user_id
             LEFT JOIN 
                 savings_accounts s ON u.id = s.user_id
-               LEFT JOIN
+            LEFT JOIN
                 credit_transactions ct ON c.id = ct.credit_account_id
             LEFT JOIN
                 savings_transactions st ON s.id = st.savings_account_id
@@ -78,22 +78,6 @@ async function getUser(userId) {
         return result.rows[0];
     } catch (error) {
         console.error('Error fetching user data:', error);
-        throw error;
-    }
-}
-
-async function postUser(first_name, last_name, email, password) {
-
-    try {
-        const query = `
-		INSERT INTO users (first_name, last_name, email, password)
-		VALUES ($1, $2, $3, $4)
-		RETURNING *`;
-        const values = [first_name, last_name, email, password];
-        const result = await pool.query(query, values);
-        return result.rows[0];
-    } catch (error) {
-        console.error('Error in postUser:', error);
         throw error;
     }
 }
@@ -116,35 +100,30 @@ async function getLogin(email, password) {
     }
 }
 
-
-async function putUser(first_name, last_name, password, email,) {
+async function newTransaction(account, user, amount, type) {
     try {
+        let transactionTable;
+        if (account === 'credit') {
+            transactionTable = 'credit_transactions';
+        } else if (account === 'savings') {
+            transactionTable = 'savings_transactions';
+        }
+
         const query = `
-            UPDATE users
-            SET
-                first_name = $1,
-                last_name = $2,
-                password = $3,
-            WHERE email = $4
-            RETURNING *`;
-        const values = [first_name, last_name, password, email,];
-        const result = await pool.query(query, values);
-        return result.rows[0];
-    } catch (error) {
-        console.log('Error: ', error);
-    }
-}
+            INSERT INTO ${transactionTable} (${account}_account_id, ${account}_transaction_amount, ${account}_transaction_type)
+            VALUES ($1, $2, $3)
+            RETURNING id`;
 
-async function deleteUser(email) {
-    try {
-        const query = 'DELETE FROM users WHERE email = $1';
-        const values = [email];
+        const values = [account === 'credit' ? user.credit_account_id : user.savings_account_id, amount, type];
+
         const result = await pool.query(query, values);
-        return result.rowCount;
+        return result.rows[0].id;
     } catch (error) {
-        console.error('Error: ', error);
+        console.error('Error in newTransaction:', error);
         throw error;
     }
 }
 
-module.exports = { getUsers, getUser, postUser, getLogin, putUser, deleteUser };
+
+
+module.exports = { getUsers, getUser, getLogin };
