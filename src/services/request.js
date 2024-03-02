@@ -9,10 +9,12 @@ async function getUsers() {
                 u.last_name,
                 u.email,
                 u.password,
+                c.id AS credit_account_id,
                 c.credit_card_number AS credit_card_number,
                 c.expiration_date AS credit_card_expiration_date,
                 c.cvv AS credit_card_cvv,
                 c.balance AS credit_balance,
+                s.id AS savings_account_id,
                 s.balance AS savings_balance
             FROM
                 users u
@@ -41,10 +43,12 @@ async function getUser(userId) {
                 u.last_name,
                 u.email,
                 u.password,
+                c.id AS credit_account_id,
                 c.credit_card_number,
                 c.expiration_date AS credit_card_expiration_date,
                 c.cvv AS credit_card_cvv,
                 c.balance AS credit_balance,
+                s.id AS savings_account_id,
                 s.savings_card_number,
                 s.expiration_date AS savings_card_expiration_date,
                 s.cvv AS savings_card_cvv,
@@ -90,7 +94,9 @@ async function getLogin(email, password) {
     }
 }
 
-async function getTransactions() {
+async function getUserTransactions(userId) {
+
+    console.log(userId)
     try {
         const query = `
             SELECT
@@ -99,11 +105,18 @@ async function getTransactions() {
                 cth.transaction_type,
                 cth.amount,
                 cth.transaction_date,
-                ca.credit_card_number AS card_number
+                ca.credit_card_number AS card_number,
+                u.first_name,
+                u.last_name,
+                u.email
             FROM
                 credit_transactions_history cth
             INNER JOIN
                 credit_accounts ca ON cth.account_id = ca.id
+            INNER JOIN
+                users u ON ca.user_id = u.id
+            WHERE
+                u.id = $1
 
             UNION ALL
 
@@ -113,11 +126,69 @@ async function getTransactions() {
                 sth.transaction_type,
                 sth.amount,
                 sth.transaction_date,
-                sa.savings_card_number AS card_number
+                sa.savings_card_number AS card_number,
+                u.first_name,
+                u.last_name,
+                u.email
             FROM
                 savings_transactions_history sth
             INNER JOIN
                 savings_accounts sa ON sth.account_id = sa.id
+            INNER JOIN
+                users u ON sa.user_id = u.id
+            WHERE
+                u.id = $1
+
+            ORDER BY
+                transaction_date DESC
+        `;
+        const result = await pool.query(query, [userId]);
+        return result.rows;
+    } catch (error) {
+        console.error('Error fetching user transactions:', error);
+        throw error;
+    }
+}
+
+
+async function getTransactions() {
+    try {
+        const query = `
+            SELECT
+                'credit' AS account_type,
+                cth.id AS transaction_id,
+                cth.transaction_type,
+                cth.amount,
+                cth.transaction_date,
+                ca.credit_card_number AS card_number,
+                u.first_name,
+                u.last_name,
+                u.email
+            FROM
+                credit_transactions_history cth
+            INNER JOIN
+                credit_accounts ca ON cth.account_id = ca.id
+            INNER JOIN
+                users u ON ca.user_id = u.id
+
+            UNION ALL
+
+            SELECT
+                'savings' AS account_type,
+                sth.id AS transaction_id,
+                sth.transaction_type,
+                sth.amount,
+                sth.transaction_date,
+                sa.savings_card_number AS card_number,
+                u.first_name,
+                u.last_name,
+                u.email
+            FROM
+                savings_transactions_history sth
+            INNER JOIN
+                savings_accounts sa ON sth.account_id = sa.id
+            INNER JOIN
+                users u ON sa.user_id = u.id
 
             ORDER BY
                 transaction_date DESC
@@ -132,40 +203,26 @@ async function getTransactions() {
 
 async function newTransaction(giver, account, receiver, amount, type) {
     try {
-        let transactionTable;
-        let transactionType;
+        const accountId = giver;
+        const transactionType = type;
+        const moneyAmount = amount;
 
-        if (type === 'deposit') {
-            transactionType = 'deposit';
-        } else if (type === 'withdrawal') {
-            transactionType = 'withdrawal';
-        } else {
-            throw new Error('Invalid transaction type');
-        }
+        let tableName;
 
         if (account === 'credit') {
-            transactionTable = 'credit_transactions_history';
+            tableName = 'credit_transactions_history';
         } else if (account === 'savings') {
-            transactionTable = 'savings_transactions_history';
+            tableName = 'savings_transactions_history';
         } else {
             throw new Error('Invalid account type');
         }
 
-        let accountId;
-        if (account === 'credit') {
-            const user = await getUser(giver);
-            accountId = user.credit_account_id;
-        } else if (account === 'savings') {
-            const user = await getUser(giver);
-            accountId = user.savings_account_id;
-        }
-
         const query = `
-            INSERT INTO ${transactionTable} (${account}_account_id, amount, transaction_type)
+            INSERT INTO ${tableName} (account_id, transaction_type, amount)
             VALUES ($1, $2, $3)
             RETURNING id`;
 
-        const values = [accountId, amount, transactionType];
+        const values = [accountId, transactionType, moneyAmount];
 
         const result = await pool.query(query, values);
         return result.rows[0].id;
@@ -180,4 +237,4 @@ async function newTransaction(giver, account, receiver, amount, type) {
 
 
 
-module.exports = { getUsers, getUser, getLogin, newTransaction, getTransactions };
+module.exports = { getUsers, getUser, getLogin, newTransaction, getUserTransactions, getTransactions };

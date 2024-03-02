@@ -26,15 +26,13 @@
                                 <option selected>
                                     Select an option
                                 </option>
-                                <option value="credit">
+                                <option value="credit" data-type="{{credit_account_id}}">
                                     Credit Account | {{ user.credit_card_number}}
                                 </option>
-                                <option value="savings">
+                                <option value="savings" data-type="{{savings_account_id}}">
                                     Saving Account | {{ user.savings_card_number}}
                                 </option>
                             </select>
-                            <div id="creditCardNumber" style="display: none;">{{ user.credit_card_number }}</div>
-                            <div id="savingsCardNumber" style="display: none;">{{ user.savings_card_number }}</div>
                             <label for="accountSelect">Select account</label>
                         </div>
                         <div class="form-floating">
@@ -105,6 +103,7 @@
             const userId = '{{user.user_id}}';
             const formData = {
                 giver: userId,
+                accountId: ,
                 account: selectedAccount,
                 receiver: selectedUser,
                 type: depositSelect,

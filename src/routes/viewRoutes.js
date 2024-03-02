@@ -1,11 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const { getUsers } = require('../services/request');
+const { getUsers, getUserTransactions } = require('../services/request');
 
 const Handlebars = require('handlebars');
+const { format } = require('date-fns');
 
 Handlebars.registerHelper('isActive', function (url, currentUrl) {
     return currentUrl === url ? 'active' : '';
+});
+
+Handlebars.registerHelper('formatDate', function (date) {
+    return format(date, 'dd-MM-yyyy');
 });
 
 const isAuthenticated = (req, res, next) => {
@@ -44,8 +49,8 @@ router.get('/create', async (req, res) => {
 router.get('/profile', isAuthenticated, async (req, res) => {
     try {
         const user = req.session.user;
-        console.log(user);
-        res.render('Profile', { user, layout: 'main', currentUrl: req.originalUrl });
+        const userTransaction = await getUserTransactions(user.user_id);
+        res.render('Profile', { user, userTransaction, layout: 'main', currentUrl: req.originalUrl });
     } catch (error) {
         handleError(res, error);
     }

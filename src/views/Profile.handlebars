@@ -85,32 +85,21 @@
                 <table id="toggle-transaction-table" class="table table-striped">
                     <thead class="thead-dark">
                         <tr>
+                            <th scope="col">Account</th>
                             <th scope="col">Date</th>
                             <th scope="col">Type</th>
                             <th scope="col">Amount</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {{#each userTransaction}}
                         <tr>
-                            <td>2024-02-28</td>
-                            <td>Transfer</td>
-                            <td>$50.00</td>
+                            <td>{{this.account_type}}</td>
+                            <td>{{formatDate this.transaction_date}}</td>
+                            <td>{{this.transaction_type}}</td>
+                            <td>{{this.amount}}</td>
                         </tr>
-                        <tr>
-                            <td>2024-02-27</td>
-                            <td>Deposit</td>
-                            <td>$100.00</td>
-                        </tr>
-                        <tr>
-                            <td>2024-02-27</td>
-                            <td>Deposit</td>
-                            <td>$100.00</td>
-                        </tr>
-                        <tr>
-                            <td>2024-02-27</td>
-                            <td>Deposit</td>
-                            <td>$1400.00</td>
-                        </tr>
+                        {{/each}}
                     </tbody>
                 </table>
 
@@ -144,6 +133,7 @@
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/2.24.0/date-fns.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -168,4 +158,10 @@
         });
 
     });
+
+
+    function formatDate(date) {
+        const { format } = window.dateFns;
+        return format(date, 'dd-MM-yy');
+    }
 </script>
