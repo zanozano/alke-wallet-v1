@@ -122,3 +122,9 @@ FROM credit_accounts;
 --
 SELECT *
 FROM savings_accounts;
+--
+SELECT *
+FROM credit_transactions_history;
+--
+SELECT *
+FROM savings_transactions_history;

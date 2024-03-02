@@ -95,32 +95,32 @@ async function getTransactions() {
         const query = `
             SELECT
                 'credit' AS account_type,
-                c.id,
-                c.amount,
-                c.transaction_type,
-                c.timestamp,
+                cth.id AS transaction_id,
+                cth.transaction_type,
+                cth.amount,
+                cth.transaction_date,
                 ca.credit_card_number AS card_number
             FROM
-                credit_transactions c
-            LEFT JOIN
-                credit_accounts ca ON c.credit_account_id = ca.id
+                credit_transactions_history cth
+            INNER JOIN
+                credit_accounts ca ON cth.account_id = ca.id
 
             UNION ALL
 
             SELECT
                 'savings' AS account_type,
-                s.id,
-                s.amount,
-                s.transaction_type,
-                s.timestamp,
-                sa.credit_card_number AS card_number
+                sth.id AS transaction_id,
+                sth.transaction_type,
+                sth.amount,
+                sth.transaction_date,
+                sa.savings_card_number AS card_number
             FROM
-                savings_transactions s
-            LEFT JOIN
-                savings_accounts sa ON s.savings_account_id = sa.id
+                savings_transactions_history sth
+            INNER JOIN
+                savings_accounts sa ON sth.account_id = sa.id
 
             ORDER BY
-                timestamp DESC
+                transaction_date DESC
         `;
         const result = await pool.query(query);
         return result.rows;
@@ -144,9 +144,9 @@ async function newTransaction(giver, account, receiver, amount, type) {
         }
 
         if (account === 'credit') {
-            transactionTable = 'credit_transactions';
+            transactionTable = 'credit_transactions_history';
         } else if (account === 'savings') {
-            transactionTable = 'savings_transactions';
+            transactionTable = 'savings_transactions_history';
         } else {
             throw new Error('Invalid account type');
         }
