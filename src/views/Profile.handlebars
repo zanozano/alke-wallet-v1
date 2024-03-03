@@ -50,8 +50,11 @@
                     <div id="credit-card-number">
                         *********
                     </div>
-                    <div>
-                        {{ user.first_name}} {{ user.last_name}}
+                    <div class="d-flex justify-content-between align-items-center p-2">
+                        <P class="fs-6">
+                            {{ user.first_name}} {{ user.last_name}}
+                        </P>
+                        <i class="fa-brands fa-cc-visa fa-2xl"></i>
                     </div>
                 </div>
                 <div class="card-container">
@@ -89,7 +92,12 @@
                     <div id="savings-card-number">
                         *********
                     </div>
-                    {{ user.first_name}} {{ user.last_name}}
+                    <div class="d-flex justify-content-between align-items-center p-2">
+                        <P class="fs-6">
+                            {{ user.first_name}} {{ user.last_name}}
+                        </P>
+                        <i class="fa-brands fa-cc-visa fa-2xl"></i>
+                    </div>
                 </div>
             </div>
 
@@ -216,9 +224,17 @@
                     labels: assetTypes,
                     datasets: [{
                         data: assetQuantities,
-                        borderWidth: 3,
+                        borderWidth: 4,
                         hoverOffset: 4
                     }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                    }
                 },
             });
         })
