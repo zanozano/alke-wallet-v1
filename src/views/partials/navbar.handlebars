@@ -1,5 +1,5 @@
 <header>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
         <div class="container">
             <a class="navbar-brand" href="/">
                 <div class="block">
@@ -16,28 +16,40 @@
                     {{/if}}
                 </div>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar"
+                aria-label="Toggle navigation">
                 <span><i class="fa-solid fa-bars"></i></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
-                    </li>
-                    {{#if isAuthenticated}}
-                    <li class="nav-item">
-                        <a class="nav-link" id="profileLink" href="/profile">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="logoutLink" href="#" onclick="signOut()">Logout</a>
-                    </li>
-                    {{else}}
-                    <li class="nav-item">
-                        <a class="nav-link" id="loginLink" href="/login">Login</a>
-                    </li>
-                    {{/if}}
-                </ul>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar"
+                aria-labelledby="offcanvasDarkNavbarLabel">
+                <div class="offcanvas-header">
+                    <p class="offcanvas-title fs-3 fw-semibold" id="offcanvasDarkNavbarLabel">
+                        Alke Wallet
+                    </p>
+                    <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="offcanvas"
+                        aria-label="Close">
+                    </button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <li class="nav-item text-center">
+                            <a class="nav-link active" aria-current="page" href="/">Home</a>
+                        </li>
+                        {{#if isAuthenticated}}
+                        <li class="nav-item text-center">
+                            <a class="nav-link" id="profileLink" href="/profile">Profile</a>
+                        </li>
+                        <li class="nav-item text-center">
+                            <a class="nav-link" id="logoutLink" href="#" onclick="signOut()">Logout</a>
+                        </li>
+                        {{else}}
+                        <li class="nav-item text-center">
+                            <a class="nav-link" id="loginLink" href="/login">Login</a>
+                        </li>
+                        {{/if}}
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>
