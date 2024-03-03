@@ -416,6 +416,14 @@ body {
 
 }
 
+.personal-information {
+    & h4 {
+        font-weight: 700;
+        font-size: 1.3rem;
+
+    }
+}
+
 .section-deposit {
     display: flex;
     justify-content: center;
