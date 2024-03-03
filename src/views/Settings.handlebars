@@ -13,14 +13,28 @@
             <h4>
                 Personal Information
             </h4>
-            <div>
-                <p>First Name: {{user.first_name}}</p>
-                <p>Last Name: {{user.last_name}}</p>
-                <p>Email: {{user.email}}</p>
-                <p>Password: {{user.password}} </p>
+            <div class="d-flex flex-column gap-3 w-100">
+                <div class="col-12 col-md-5 m-auto">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" id="firstName" class="form-control" value="{{user.first_name}}" disabled>
+                </div>
+
+                <div class="col-12 col-md-5 m-auto">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" id="lastName" class="form-control" value="{{user.last_name}}" disabled>
+                </div>
+
+                <div class="col-12 col-md-5 m-auto">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" class="form-control" value="{{user.email}}" disabled>
+                </div>
+                <div class="col-12 col-md-5 m-auto">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-control" value="{{user.password}}" disabled>
+                </div>
+
             </div>
         </div>
-
     </div>
 
 </div>
