@@ -15,7 +15,56 @@ CREATE TABLE users (
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL
 );
+--
+--
+CREATE TABLE assets (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    asset_name VARCHAR(255) NOT NULL,
+    asset_type VARCHAR(100) NOT NULL,
+    asset_quantity DECIMAL(15, 2) NOT NULL DEFAULT 0,
+    asset_value DECIMAL(15, 2) NOT NULL DEFAULT 0,
+    purchase_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
 -- 
+--
+INSERT INTO assets (
+        user_id,
+        asset_name,
+        asset_quantity,
+        asset_type,
+        asset_value
+    )
+VALUES (
+        '6c450e05-5146-4f1d-bad4-f9e2ca6bc79c',
+        'BTC',
+        20,
+        'Cryptocurrency',
+        20000.00
+    ),
+    (
+        '6c450e05-5146-4f1d-bad4-f9e2ca6bc79c',
+        'Gold',
+        1,
+        'Precious Metal',
+        10000.00
+    ),
+    (
+        '6c450e05-5146-4f1d-bad4-f9e2ca6bc79c',
+        'ETH',
+        15,
+        'Cryptocurrency',
+        15000.00
+    ),
+    (
+        '6c450e05-5146-4f1d-bad4-f9e2ca6bc79c',
+        'XRP',
+        1000,
+        'Cryptocurrency',
+        1000.00
+    );
+--
 CREATE TABLE credit_accounts (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID REFERENCES users(id) ON DELETE CASCADE,

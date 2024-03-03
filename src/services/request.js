@@ -96,7 +96,6 @@ async function getLogin(email, password) {
 
 async function getUserTransactions(userId) {
 
-    console.log(userId)
     try {
         const query = `
             SELECT
@@ -150,8 +149,29 @@ async function getUserTransactions(userId) {
     }
 }
 
+async function getUserAssets(userId) {
+    try {
+        const query = `
+            SELECT
+                a.asset_name,
+                a.asset_quantity,
+                a.asset_type,
+                a.asset_value
+            FROM
+                assets a
+            WHERE
+                a.user_id = $1
+        `;
+        const result = await pool.query(query, [userId]);
+        return result.rows;
+    } catch (error) {
+        console.error('Error fetching user assets:', error);
+        throw error;
+    }
+}
 
-async function getTransactions() {
+
+async function getAllTransactions() {
     try {
         const query = `
             SELECT
@@ -237,4 +257,4 @@ async function newTransaction(giver, account, receiver, amount, type) {
 
 
 
-module.exports = { getUsers, getUser, getLogin, newTransaction, getUserTransactions, getTransactions };
+module.exports = { getUsers, getUser, getLogin, newTransaction, getUserTransactions, getUserAssets, getAllTransactions };

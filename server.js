@@ -30,7 +30,7 @@ const isAuthenticated = (req, res, next) => {
 
 app.use(isAuthenticated);
 
-const { getUser, getUsers, getLogin, newTransaction, getTransactions } = require('./src/services/request');
+const { getUser, getUsers, getLogin, newTransaction, getAllTransactions, getUserAssets } = require('./src/services/request');
 
 const handlebarsHelpers = require('handlebars-helpers')();
 const customHelpers = {
@@ -84,8 +84,14 @@ app.get('/users', async (req, res) => {
 });
 
 app.get('/transactions', async (req, res) => {
-    const data = await getTransactions();
+    const data = await getAllTransactions();
     res.send(data);
+});
+
+app.get('/userAssets', async (req, res) => {
+    const user = req.session.user;
+    const userAssets = await getUserAssets(user.user_id);
+    res.send(userAssets);
 });
 
 app.post('/verify', async (req, res) => {
