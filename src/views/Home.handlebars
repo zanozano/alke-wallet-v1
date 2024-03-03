@@ -85,7 +85,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         const fetchUrl = 'https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies';
         const baseCurrency = 'usd';
-        const currenciesToCompare = ['clp', 'ars', 'pen', 'cop', 'usdt', 'eur', 'gbp', 'jpy', 'cad', 'aud'];
+        const currenciesToCompare = ['clp', 'ars', 'pen', 'cop', 'usdt', 'gbp', 'jpy', 'cad', 'aud'];
 
         const fetchPromises = currenciesToCompare.map(currency => {
             const url = `${fetchUrl}/${baseCurrency.toLowerCase()}/${currency}.json`;

@@ -30,13 +30,19 @@
                         </span>
                         {{/if}}
                     </div>
-                    <div>
+                    <div id="credit-balance-hide" style="display: none;">
                         <i class="fa-solid fa-dollar-sign"></i>
                         {{ user.credit_balance}}
                     </div>
-                    <div>
-                        <hr>
+                    <div id="credit-balance">
+                        *********
+                    </div>
+                    <hr>
+                    <div id="credit-card-number-hide" style="display: none;">
                         <p>{{user.credit_card_number}}</p>
+                    </div>
+                    <div id="credit-card-number">
+                        *********
                     </div>
                 </div>
                 <div class="card-container">
@@ -54,13 +60,19 @@
                         </span>
                         {{/if}}
                     </div>
-                    <div>
+                    <div id="savings-balance-hide" style="display: none;">
                         <i class="fa-solid fa-dollar-sign"></i>
                         {{ user.savings_balance}}
                     </div>
-                    <div>
-                        <hr>
+                    <div id="savings-balance">
+                        *********
+                    </div>
+                    <hr>
+                    <div id="savings-card-number-hide" style="display: none;">
                         <p>{{ user.savings_card_number}}</p>
+                    </div>
+                    <div id="savings-card-number">
+                        *********
                     </div>
                 </div>
             </div>
@@ -140,6 +152,15 @@
     $(document).ready(function () {
         $('.icon-btn').click(function () {
             $(this).find('i').toggleClass('fa-eye fa-eye-slash');
+            var container = $(this).closest('.card-container');
+            container.find('#credit-balance').toggle();
+            container.find('#credit-balance-hide').toggle();
+            container.find('#credit-card-number').toggle();
+            container.find('#credit-card-number-hide').toggle();
+            container.find('#savings-balance').toggle();
+            container.find('#savings-balance-hide').toggle();
+            container.find('#savings-card-number').toggle();
+            container.find('#savings-card-number-hide').toggle();
         });
 
         $("#toggle-transaction-table").show();
