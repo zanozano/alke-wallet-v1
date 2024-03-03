@@ -123,7 +123,7 @@
                 {{/if}}
             </div>
             <div id="toggle-assets-chart" class="chart-img">
-                <canvas id="myChart"></canvas>
+                <canvas id="myChart" class="m-auto"></canvas>
             </div>
             <div class="hide-img" id="toggle-assets-img">
                 <img src="./img/hide-document.svg" alt="hide image">
@@ -169,25 +169,24 @@
         .then(response => {
             const userAssets = response.data;
             console.log(userAssets);
-            const assetTypes = userAssets.map(asset => asset.asset_type);
+            const assetTypes = userAssets.map(asset => asset.asset_name);
             const assetQuantities = userAssets.map(asset => parseFloat(asset.asset_quantity))
 
             const ctx = document.getElementById('myChart');
             new Chart(ctx, {
                 type: 'doughnut',
                 data: {
+                    labels: assetTypes,
                     datasets: [{
-                        label: assetTypes,
                         data: assetQuantities,
-                        borderWidth: 3
+                        borderWidth: 3,
+                        hoverOffset: 4
                     }]
                 },
             });
         })
         .catch(error => {
-            // Handle error
             console.error('Error fetching user assets:', error);
         });
-
 
 </script>
