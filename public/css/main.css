@@ -108,7 +108,7 @@ body {
     }
 
     &:focus {
-        background-color: var(--tertiary);
+        background-color: var(--primary);
     }
 
     &:active {
@@ -241,7 +241,7 @@ body {
         aspect-ratio: 1.5/1;
         border-radius: 12px;
         padding: 18px;
-        width: 260px;
+        width: 280px;
         display: flex;
         color: var(--primary);
         flex-direction: column;
@@ -368,6 +368,27 @@ body {
         align-items: stretch;
         opacity: 0.25;
         width: 120px;
+    }
+}
+
+.card-information {
+    display: flex;
+    justify-content: space-between;
+
+    & div {
+        display: flex;
+        flex-direction: column;
+
+
+        & p:first-child {
+            font-weight: 500;
+            font-size: 0.8rem;
+        }
+
+        & p {
+            font-weight: 400;
+            font-size: 0.9rem;
+        }
     }
 }
 

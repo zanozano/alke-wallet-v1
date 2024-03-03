@@ -38,11 +38,20 @@
                         *********
                     </div>
                     <hr>
-                    <div id="credit-card-number-hide" style="display: none;">
+                    <div class="card-information" id="credit-card-number-hide" style="display: none;">
                         <p>{{user.credit_card_number}}</p>
+                        <div>
+                            <p>
+                                Exp. Date
+                            </p>
+                            <p>{{formatDate user.credit_card_expiration_date}}</p>
+                        </div>
                     </div>
                     <div id="credit-card-number">
                         *********
+                    </div>
+                    <div>
+                        {{ user.first_name}} {{ user.last_name}}
                     </div>
                 </div>
                 <div class="card-container">
@@ -68,12 +77,19 @@
                         *********
                     </div>
                     <hr>
-                    <div id="savings-card-number-hide" style="display: none;">
+                    <div class="card-information" id="savings-card-number-hide" style="display: none;">
                         <p>{{ user.savings_card_number}}</p>
+                        <div>
+                            <p>
+                                Exp. Date
+                            </p>
+                            <p>{{formatDate user.savings_card_expiration_date}}</p>
+                        </div>
                     </div>
                     <div id="savings-card-number">
                         *********
                     </div>
+                    {{ user.first_name}} {{ user.last_name}}
                 </div>
             </div>
 

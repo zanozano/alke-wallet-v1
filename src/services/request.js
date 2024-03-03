@@ -3,7 +3,7 @@ const pool = require('./pool');
 async function getUsers() {
     try {
         const query = `
-            SELECT
+           SELECT DISTINCT
                 u.id AS user_id,
                 u.first_name,
                 u.last_name,

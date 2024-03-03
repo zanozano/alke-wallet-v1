@@ -3,16 +3,17 @@
     <div class="transfer-container">
         <div class="select-trasnfer">
             <h4>What action would you like to take?</h4>
-            <div>
-                <button id="withdrawalBtn" class="btn btn-primary flex-grow-1">Withdrawal
+            <div id="type-transaction">
+                <button value="Withdrawal" id="withdrawalBtn" class="btn btn-primary flex-grow-1">Withdrawal
                     <img src="./img/withdrawal-icon.svg" alt="transfer money">
                 </button>
 
-                <button id="depositBtn" class="btn btn-primary flex-grow-1">Deposit
+                <button value="Deposit" id="depositBtn" class="btn btn-primary flex-grow-1">Deposit
                     <img src="./img/transfer-icon.svg" alt="transfer money">
                 </button>
             </div>
-            <div id="depositForm" class="form-container">
+
+            <div id="depositForm" class="form-container" style="display: none;">
                 <form>
                     <div class="d-flex flex-column gap-3">
 
@@ -35,7 +36,7 @@
                             </select>
                             <label for="accountSelect">Select account</label>
                         </div>
-                        <div class="form-floating">
+                        <div class="form-floating" id="TransferUserList">
                             <select class="form-select" id="userSelect">
                                 <option selected>
                                     Select an option
@@ -45,16 +46,6 @@
                                 {{/each}}
                             </select>
                             <label for="userSelect">Select user</label>
-                        </div>
-                        <div class="form-floating">
-                            <select class="form-select" id="depositSelect">
-                                <option selected>
-                                    Select an option
-                                </option>
-                                <option value="deposit">Deposit</option>
-                                <option value="withdrawal">Withdrawal</option>
-                            </select>
-                            <label for="depositSelect">Type</label>
                         </div>
                         <div class="form-floating">
                             <input type="number" class="form-control" id="amountSelect" name="amountSelect"
@@ -78,6 +69,27 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
+        let typeTransaction
+
+        $('#type-transaction .btn').click(function () {
+            $('#type-transaction .btn').not(this).css('opacity', '0.2');
+            $(this).css('opacity', '1');
+            typeTransaction = $(this).val();
+            console.log('Selected value:', typeTransaction);
+
+            if (typeTransaction !== '') {
+                document.getElementById('depositForm').style.display = 'block';
+            } else {
+                document.getElementById('depositForm').style.display = 'none';
+            }
+            if (typeTransaction === 'Withdrawal') {
+                $('#TransferUserList').hide();
+            } else if (typeTransaction === 'Deposit') {
+                $('#TransferUserList').show();
+            }
+        });
+
+
         const accountSelect = document.getElementById('accountSelect');
         const balanceDisplay = document.getElementById('balanceDisplay');
         const confirmButton = document.getElementById('confirmButton');
@@ -98,19 +110,18 @@
             e.preventDefault();
             const selectedAccount = document.getElementById('accountSelect').value;
             const selectedUser = document.getElementById('userSelect').value;
-            const depositSelect = document.getElementById('depositSelect').value;
             const amountSelect = document.getElementById('amountSelect').value.toString();
             const userId = '{{user.user_id}}';
             const formData = {
                 giver: userId,
-                accountId: ,
+                accountId: '22',
                 account: selectedAccount,
                 receiver: selectedUser,
-                type: depositSelect,
+                type: typeTransaction,
                 amount: amountSelect
             };
 
-            if (!selectedAccount || !selectedUser || !depositSelect || !amountSelect) {
+            if (!selectedAccount || !selectedUser || !amountSelect) {
                 swal("Error", "Please fill in all fields", "error");
                 return;
             }
