@@ -47,17 +47,25 @@ body {
 }
 
 .container-brand-nav {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
+    display: none;
+}
 
-    img {
-        padding-top: 4rem;
-        margin: 0 auto;
-        width: 40%;
+@media (max-width: 991px) {
+
+    .container-brand-nav {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            padding-top: 4rem;
+            margin: 0 auto;
+            width: 40%;
+        }
     }
 }
+
 
 .container {
 
