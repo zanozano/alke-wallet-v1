@@ -27,10 +27,10 @@
                                 <option selected>
                                     Select an option
                                 </option>
-                                <option value="credit" data-type="{{credit_account_id}}">
+                                <option value="{{user.credit_account_id}}" data-type="credit">
                                     Credit Account | {{ user.credit_card_number}}
                                 </option>
-                                <option value="savings" data-type="{{savings_account_id}}">
+                                <option value="{{user.savings_account_id}}" data-type="savings">
                                     Saving Account | {{ user.savings_card_number}}
                                 </option>
                             </select>
@@ -75,7 +75,6 @@
             $('#type-transaction .btn').not(this).css('opacity', '0.2');
             $(this).css('opacity', '1');
             typeTransaction = $(this).val();
-            console.log('Selected value:', typeTransaction);
 
             if (typeTransaction !== '') {
                 document.getElementById('depositForm').style.display = 'block';
@@ -90,6 +89,7 @@
         });
 
 
+
         const accountSelect = document.getElementById('accountSelect');
         const balanceDisplay = document.getElementById('balanceDisplay');
         const confirmButton = document.getElementById('confirmButton');
@@ -97,9 +97,10 @@
 
         accountSelect.addEventListener('change', function () {
             const selectedOption = accountSelect.value;
-            if (selectedOption === 'credit') {
+            console.log(selectedOption)
+            if (selectedOption === '{{user.credit_account_id}}') {
                 balanceDisplay.textContent = '{{user.credit_balance}}';
-            } else if (selectedOption === 'savings') {
+            } else if (selectedOption === '{{user.savings_account_id}}') {
                 balanceDisplay.textContent = '{{user.savings_balance}}';
             } else {
                 balanceDisplay.textContent = '';
@@ -109,17 +110,31 @@
         confirmButton.addEventListener('click', function (e) {
             e.preventDefault();
             const selectedAccount = document.getElementById('accountSelect').value;
+            const selectedOption = $('#accountSelect option:selected');
+            const dataType = selectedOption.data('type');
             const selectedUser = document.getElementById('userSelect').value;
             const amountSelect = document.getElementById('amountSelect').value.toString();
             const userId = '{{user.user_id}}';
-            const formData = {
-                giver: userId,
-                accountId: '22',
-                account: selectedAccount,
-                receiver: selectedUser,
-                type: typeTransaction,
-                amount: amountSelect
-            };
+
+            let body = {}
+            if (typeTransaction === 'Withdrawal') {
+                body = {
+                    account: selectedAccount,
+                    action: typeTransaction,
+                    type: dataType,
+                    amount: amountSelect
+                }
+            } else if (typeTransaction === 'Deposit') {
+                body = {
+                    giver: userId,
+                    account: selectedAccount,
+                    receiver: selectedUser,
+                    type: typeTransaction,
+                    amount: amountSelect
+                }
+            } else {
+                return console.log('No options selected')
+            }
 
             if (!selectedAccount || !selectedUser || !amountSelect) {
                 swal("Error", "Please fill in all fields", "error");
@@ -127,8 +142,7 @@
             }
 
             try {
-                console.log(formData)
-                axios.post('/transaction', formData)
+                axios.post('/transaction', body)
                     .then(response => {
                         swal("Success", "Withdrawal successful", "success").then(() => {
                             form.reset();

@@ -1,10 +1,11 @@
-CREATE DATABASE alkewallet;
---
 DROP TABLE IF EXISTS credit_transactions_history,
 savings_transactions_history,
 credit_accounts,
 savings_accounts,
+assets,
 users;
+--
+CREATE DATABASE alkewallet;
 --
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- 
@@ -24,46 +25,8 @@ CREATE TABLE assets (
     asset_type VARCHAR(100) NOT NULL,
     asset_quantity DECIMAL(15, 2) NOT NULL DEFAULT 0,
     asset_value DECIMAL(15, 2) NOT NULL DEFAULT 0,
-    purchase_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    purchase_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
--- 
---
-INSERT INTO assets (
-        user_id,
-        asset_name,
-        asset_quantity,
-        asset_type,
-        asset_value
-    )
-VALUES (
-        '6c450e05-5146-4f1d-bad4-f9e2ca6bc79c',
-        'BTC',
-        20,
-        'Cryptocurrency',
-        20000.00
-    ),
-    (
-        '6c450e05-5146-4f1d-bad4-f9e2ca6bc79c',
-        'Gold',
-        1,
-        'Precious Metal',
-        10000.00
-    ),
-    (
-        '6c450e05-5146-4f1d-bad4-f9e2ca6bc79c',
-        'ETH',
-        15,
-        'Cryptocurrency',
-        15000.00
-    ),
-    (
-        '6c450e05-5146-4f1d-bad4-f9e2ca6bc79c',
-        'XRP',
-        1000,
-        'Cryptocurrency',
-        1000.00
-    );
 --
 CREATE TABLE credit_accounts (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -162,6 +125,49 @@ VALUES (
             SELECT STRING_AGG(FLOOR(RANDOM() * 10)::TEXT, '')
             FROM GENERATE_SERIES(1, 3)
         )
+    );
+END LOOP;
+END $$;
+--
+DO $$
+DECLARE user_record RECORD;
+BEGIN FOR user_record IN
+SELECT *
+FROM users LOOP
+INSERT INTO assets (
+        user_id,
+        asset_name,
+        asset_quantity,
+        asset_type,
+        asset_value
+    )
+VALUES (
+        user_record.id,
+        'BTC',
+        20,
+        'Cryptocurrency',
+        20000.00
+    ),
+    (
+        user_record.id,
+        'Gold',
+        10,
+        'Precious Metal',
+        10000.00
+    ),
+    (
+        user_record.id,
+        'ETH',
+        15,
+        'Cryptocurrency',
+        15000.00
+    ),
+    (
+        user_record.id,
+        'XRP',
+        40,
+        'Cryptocurrency',
+        1000.00
     );
 END LOOP;
 END $$;

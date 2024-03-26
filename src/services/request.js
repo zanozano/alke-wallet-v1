@@ -80,8 +80,10 @@ async function getLogin(email, password) {
     try {
         const query = 'SELECT * FROM users WHERE email = $1 AND password = $2';
         const values = [email, password];
+
         const result = await pool.query(query, values);
         const user = result.rows[0];
+
         if (user) {
             console.log(user);
             return user;
@@ -90,9 +92,10 @@ async function getLogin(email, password) {
         }
     } catch (error) {
         console.error('Error in getLogin:', error);
-        throw error;
+        return { error: 'Error logging in. Please try again later.' };
     }
 }
+
 
 async function getUserTransactions(userId) {
 
@@ -221,40 +224,87 @@ async function getAllTransactions() {
     }
 }
 
-async function newTransaction(giver, account, receiver, amount, type) {
+async function newTransaction(body) {
+    let client = null;
+
     try {
-        const accountId = giver;
-        const transactionType = type;
-        const moneyAmount = amount;
+        console.log(body);
+
+        const accountId = body.account;
+        const transactionType = body.action;
+        const amount = parseFloat(body.amount);
 
         let tableName;
+        let accountTable;
+        let balanceColumn;
 
-        if (account === 'credit') {
+        if (body.type === 'credit') {
             tableName = 'credit_transactions_history';
-        } else if (account === 'savings') {
+            accountTable = 'credit_accounts';
+            balanceColumn = 'balance';
+        } else if (body.type === 'savings') {
             tableName = 'savings_transactions_history';
+            accountTable = 'savings_accounts';
+            balanceColumn = 'balance';
         } else {
             throw new Error('Invalid account type');
         }
 
-        const query = `
+        client = await pool.connect();
+        await client.query('BEGIN');
+
+        const queryTransaction = `
             INSERT INTO ${tableName} (account_id, transaction_type, amount)
             VALUES ($1, $2, $3)
             RETURNING id`;
 
-        const values = [accountId, transactionType, moneyAmount];
+        const valuesTransaction = [accountId, transactionType, amount];
+        const resultTransaction = await client.query(queryTransaction, valuesTransaction);
 
-        const result = await pool.query(query, values);
-        return result.rows[0].id;
+        const queryGetBalance = `
+            SELECT ${balanceColumn} FROM ${accountTable}
+            WHERE id = $1 FOR UPDATE`;
+
+        const valuesGetBalance = [accountId];
+        const resultGetBalance = await client.query(queryGetBalance, valuesGetBalance);
+        const currentBalance = parseFloat(resultGetBalance.rows[0][balanceColumn]);
+
+        const newBalance = currentBalance - amount;
+
+        const queryUpdateBalance = `
+            UPDATE ${accountTable} SET ${balanceColumn} = $1
+            WHERE id = $2`;
+
+        const valuesUpdateBalance = [newBalance, accountId];
+        await client.query(queryUpdateBalance, valuesUpdateBalance);
+
+        await client.query('COMMIT');
+
+        return resultTransaction.rows[0].id;
+
     } catch (error) {
+        if (client) {
+            await client.query('ROLLBACK');
+        }
+
         console.error('Error in newTransaction:', error);
         throw error;
+
+    } finally {
+        if (client) {
+            client.release();
+        }
     }
 }
 
 
 
-
-
-
-module.exports = { getUsers, getUser, getLogin, newTransaction, getUserTransactions, getUserAssets, getAllTransactions };
+module.exports = {
+    getUsers,
+    getUser,
+    getLogin,
+    newTransaction,
+    getUserTransactions,
+    getUserAssets,
+    getAllTransactions,
+};
